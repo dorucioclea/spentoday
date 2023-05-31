@@ -1,4 +1,4 @@
-![Spentoday banner](./docs/banner.png)
+![Spentoday banner](./docs/banner.svg)
 
 #
 
