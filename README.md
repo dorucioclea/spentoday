@@ -1,4 +1,6 @@
-# Spentoday
+![Spentoday banner](./docs/banner.png)
+
+#
 
 If you are afraid of losing money, spend it today. Live without fear.
 Selling platform of future for customers and business owners.
@@ -8,6 +10,8 @@ Website: [comming soon]
 GitHub repo: [flurium/spentoday](https://github.com/flurium/spentoday)
 
 Spelling: spen + to + day (do it as italian)
+
+Technical requirements: [docs/tech-requirements](./docs/tech-requirements.md)
 
 ### Backend technologies:
 
