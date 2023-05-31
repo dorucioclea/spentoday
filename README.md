@@ -7,6 +7,8 @@ Website: [comming soon]
 
 GitHub repo: [flurium/spentoday](https://github.com/flurium/spentoday)
 
+Spelling: spen + to + day (do it as italian)
+
 ### Backend technologies:
 
 - ASP.NET Core
