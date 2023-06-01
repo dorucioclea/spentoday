@@ -8,8 +8,10 @@ Navigation:
 - [Business](#business)
 - [Customers](#customers)
 - [Multilanguage](#multilanguage)
+- [Webhooks](#webhooks)
 - [AI](#ai)
 - [Analytics](#analytics)
+- [Technologies](#technologies)
 
 ## Auth
 
@@ -135,6 +137,14 @@ If provided only 1 translation, then platform will always use it.
 If 2 or more translations are provided, then Spentoday will use language of user.
 If product doesn't suppor langugae of user, then it will use first possible or default.
 
+## Webhooks
+
+Sometimes you need to add external functionality to the service or connect it with other service.
+So we want to add some really basic webhook support. Maybe just one webhook for all sorts of things.
+
+It will be cool at least for experience, but it also can be very useful.
+For example you want to send some additional email when user buy some specific product.
+
 ## AI
 
 Maybe to be in step with modernity we can use AI. Some examples:
@@ -146,3 +156,26 @@ Maybe to be in step with modernity we can use AI. Some examples:
 ## Analytics
 
 Analytics should be anabled for platform itself and for each store. Business wants to see numbers and we also.
+
+## Technologies
+
+- [Backend](#backend)
+- [Frontend](#frontend)
+
+We decided to seperate our backend and frontend.
+
+### Backend
+
+It's obvious: we will use C#. Just because we know it best in our team.
+And it's not so annoying as Java.
+
+Asp.Net Core and Entity Framework Core, that's it. But we will NEVER use Repository.
+As a leader I created small extension for Entity Framework which gives us really good DX
+and POWER. And we don't need ton of files for repositories.
+
+Database: CockroachDb. It is compatible with PostgreSQL drivers.
+CockroachCloud gives good performance and nice free tier.
+
+We will probably need to run background task, like webhooks.
+
+### Frontend

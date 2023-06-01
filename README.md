@@ -11,7 +11,7 @@ GitHub repo: [flurium/spentoday](https://github.com/flurium/spentoday)
 
 Spelling: spen + to + day (do it as italian)
 
-Technical requirements: [docs/tech-requirements](./docs/tech-requirements.md)
+Technical requirements!: [docs/tech-requirements](./docs/tech-requirements.md)
 
 ### Backend technologies:
 
