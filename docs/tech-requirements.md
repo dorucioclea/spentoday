@@ -16,12 +16,15 @@ That's why we should support sign in with external providers as well as password
 I think we should also make it inside of modal. Because redirecting user to another page makes user less comfortable.
 
 All users are registered same way, customer or business owner doesn't matter.
+We keep one auth system for all shops inside the platform.
 
 ## Business
 
-- [isolated page](#isolated-page)
-- [pricing](#pricing)
-- [products](#products)
+- [Isolated page](#isolated-page)
+- [Pricing](#pricing)
+- [Products](#products)
+- [Shop customization](#shop-customization)
+- [Approving](#approving)
 
 From business side we want to create shop and earn more money from it than we spend on it (basic stuff). Actually we want to earn more money in comparison with other places to do it (local shop, other platforms) in relation to the spent resources.
 Super basically:
@@ -62,6 +65,29 @@ According to product images to keep design clean:
 - or we show them as Pinterest do it: in columns, not in rows
 
 As addition we can add video support, but from youtube, because storing video on our servers is quite expensive.
+
+### Shop customization
+
+That's where ways between providing isolated shop and central platform go in different ways.
+I think it's better to watch at Spentoday as shopping center in real life.
+If we look at shopping centers, they have own design,
+but each shop inside have different customization.
+
+So Spentoday will provide small set of customization of our main design.
+For example: main color of shop, banner of shop.
+
+### Approving
+
+Approving shops is essential to keep only good shops inside of the platform.
+We want to remove all trash products. But keep approving process fast and super easy.
+[Paddle payment service](https://www.paddle.com) has complicated approving process as for me.
+So we need simple, not annoying and resonable system.
+
+Propositions:
+
+- approving first 3 products by admins of platform (i propose amount available in trial plan)
+- check for bad words in description, name
+- reapproving shop if a lot of bad reviews are sent (in comparison to good ones)
 
 ## AI
 
