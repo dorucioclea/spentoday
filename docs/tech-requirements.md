@@ -4,10 +4,7 @@ Navigation:
 
 - [Auth](#auth)
 - [Business](#business)
--
--
--
--
+- [AI](#ai)
 - [Analytics](#analytics)
 
 ## Auth
@@ -21,6 +18,10 @@ I think we should also make it inside of modal. Because redirecting user to anot
 All users are registered same way, customer or business owner doesn't matter.
 
 ## Business
+
+- [isolated page](#isolated-page)
+- [pricing](#pricing)
+- [products](#products)
 
 From business side we want to create shop and earn more money from it than we spend on it (basic stuff). Actually we want to earn more money in comparison with other places to do it (local shop, other platforms) in relation to the spent resources.
 Super basically:
