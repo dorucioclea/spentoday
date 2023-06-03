@@ -12,6 +12,7 @@ Navigation:
 - [AI](#ai)
 - [Analytics](#analytics)
 - [Technologies](#technologies)
+- [Competitors](#competitors)
 
 ## Auth
 
@@ -161,6 +162,7 @@ Analytics should be anabled for platform itself and for each store. Business wan
 
 - [Backend](#backend)
 - [Frontend](#frontend)
+- [Infrastructure](#infrastructure)
 
 We decided to seperate our backend and frontend.
 
@@ -179,3 +181,30 @@ CockroachCloud gives good performance and nice free tier.
 We will probably need to run background task, like webhooks.
 
 ### Frontend
+
+That topic needs tough discussion, because to be modern platform we should use modern technologies. So I consider several options:
+
+- [Next js](https://nextjs.org/)
+- [Svelte](https://kit.svelte.dev/)
+- [Htmx](https://htmx.org/) + [Alpine js](https://alpinejs.dev/) (actually joking)
+
+Next js is powerful, but React is kind of slow and we actually don't need a lot of new functionality of Next.
+
+Of course we will use [Tailwind css](https://tailwindcss.com/) and can look at [Shadcn UI](https://ui.shadcn.com/)
+
+### Infrastructure
+
+Right now for payments I think to go with [Paypal](https://www.paypal.com/). If somehow we will work on it later, I will try to move to [Hyperswitch](https://hyperswitch.io/).
+
+## Competitors
+
+In this section I will mention some competitors.
+I think we can get good features of them and find unique way for us. So Spentoday will be good solution to choose.
+
+### [Squarespace](https://www.squarespace.com/)
+
+They are more like website builder, but also provide ecommerce experience. All Squarespace websites exist in isolated environment and a bit limited in filters and search. But they have really good look and product customization.
+
+We can take customization from Squarespace, because it's good, but also add generic properties to add global filters.
+
+### Shopify
