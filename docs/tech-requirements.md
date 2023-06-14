@@ -201,10 +201,25 @@ Right now for payments I think to go with [Paypal](https://www.paypal.com/). If 
 In this section I will mention some competitors.
 I think we can get good features of them and find unique way for us. So Spentoday will be good solution to choose.
 
-### [Squarespace](https://www.squarespace.com/)
+- [Squarespace](https://www.squarespace.com/)
+- [Shopify](https://www.shopify.com/)
+- [BigCommerce](https://www.bigcommerce.com/)
+- [PrestaShop](https://prestashop.com/)
+- [Rozetka](https://rozetka.com.ua/)
+- [Swell](https://www.swell.is/) - very small thing and API oriented
+
+### Squarespace
 
 They are more like website builder, but also provide ecommerce experience. All Squarespace websites exist in isolated environment and a bit limited in filters and search. But they have really good look and product customization.
 
 We can take customization from Squarespace, because it's good, but also add generic properties to add global filters.
 
-### Shopify
+### Rozetka
+
+We also do international support (english). But we are strongly Ukraine-oriented. So one of our biggest competitors is Rozetka.
+
+But it's much harder to create store in Rozetka. It uses old technologies. And there is a lot of trash in it nowadays.
+
+So we need control quality of shops, but make creating ones as much easy as possible.
+
+We can also try to coloborate with shipping services and local payments, like monobank for example.
