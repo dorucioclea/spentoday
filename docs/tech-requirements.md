@@ -5,6 +5,7 @@ All platform is reading oriented (fast read, slower write)
 Navigation:
 
 - [Auth](#auth)
+- [Chat](#chat)
 - [Business](#business)
 - [Customers](#customers)
 - [Multilanguage](#multilanguage)
@@ -24,6 +25,21 @@ I think we should also make it inside of modal. Because redirecting user to anot
 
 All users are registered same way, customer or business owner doesn't matter.
 We keep one auth system for all shops inside the platform.
+
+Options for login:
+
+- email and password
+- google
+
+We need **accept of Terms of Service**. It's going to be checkbox or label "By creating account at our service you accept our Terms of Service".
+
+**Forgot password** options should be also available. Send email with link to reset password.
+
+Check: [dashboard.render.com](https://dashboard.render.com/) for good example.
+
+## Chat
+
+I think customers should be able to chat with shops' admins. Maybe we can make it premium feture. Or only if you have problems with shipping, etc.
 
 ## Business
 
@@ -99,6 +115,15 @@ but each shop inside have different customization.
 So Spentoday will provide small set of customization of our main design.
 For example: main color of shop, banner of shop.
 
+- favicon
+- name
+- banner (maybe several, slider)
+- logo
+- main color (maybe secondary)
+- links to social media
+- additional inform ation pages? (markdown)
+- gift certeficates
+
 ### Approving
 
 Approving shops is essential to keep only good shops inside of the platform.
@@ -123,6 +148,29 @@ Some of them are editors, owners or just viewers.
 ## Customers
 
 Customers can subscribe to a shop to recieve notifications and quickly access them.
+
+Make possible to buy stuff without login?
+
+### Profile
+
+Settings:
+
+- email
+- password
+- language
+- full name
+- birth date
+- ship addresses (can be several, should propose to save address after order)
+- payment methods
+
+Sections:
+
+- my reviews
+- my subscriptions (stores I subscribed)
+- cart
+- orders history
+- favorites
+- watch history?
 
 ## Multilanguage
 
