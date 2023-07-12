@@ -75,22 +75,22 @@ Trial plan is nessasary to give opportunity to try service. But it should be lim
 
 ### Products
 
+Fields:
+
+- name
+- description in markdown
+- price
+- on sale price, null in not on sale
+- primary image (shown at search page)
+- list of secondary images
+- amount of stock, if null or <0 then unlimited
+
 Product description should contain markdown to make good experience with rich editor.
 
-To make powerful search:
+#### Variants
 
-- nested categories (we can make max level)
-- keywords for products
-- generic properties
-
-`Categories` should be added or `approved by admins` of platform. Can set temporary category,
-when it will be approved, category of product will be changed.
-
-Support of `generic properties` for selected category is extrimely important. They allow to filter all products inside category with similar criteries, like processor for notebook. But all generic properties should be **added** or **approved** by admins of platform.
-
-`Custom properties` are unique for each product. Products can't be filtered by custome properties. We can move custome property into generic property if more than 25% of products in category use it, but it's really expensive.
-
-Question: should we support `generic properties` inside one store, but outside they are custom properties.
+If product has several versions. For example colors, customer should be able to choose one
+when he buyes.
 
 According to product images to keep design clean:
 
@@ -122,7 +122,27 @@ For example: main color of shop, banner of shop.
 - main color (maybe secondary)
 - links to social media
 - additional inform ation pages? (markdown)
-- gift certeficates
+- seo:
+  - title
+  - description
+  - image
+
+#### Contact page
+
+A lot of online shops have contact form. So we should provide one.
+We can send emails by ourselves, but it should be payed.
+Also make possible to send through telegram.
+
+#### Info pages
+
+Info pages are just markdown. Shop owners add new info page, write bunch of markdown,
+we render markdown to html and show.
+
+#### Newsletter?
+
+A lot of shops also have newslatter subscirption section. We can add it, just put email
+to table and send notification to shop owner about new newsletter subscriber. It's almost
+like subscriptions to the shop. I think we can combine it into 1.
 
 ### Approving
 
@@ -157,9 +177,7 @@ Settings:
 
 - email
 - password
-- language
 - full name
-- birth date
 - ship addresses (can be several, should propose to save address after order)
 - payment methods
 
