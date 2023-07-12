@@ -13,21 +13,23 @@ Spelling: spen + to + day (do it as italian)
 
 Technical requirements!: [docs/tech-requirements](./docs/tech-requirements.md)
 
-### Backend technologies:
+### Backend echnologies:
 
-- ASP.NET Core
-- PostgreSQL
+- Asp.Net Core
+- CockroachDB
 - Entity Framework Core
 - Docker
 
 ### Frontend technologies:
 
-- Next or Svelte
-- Tailwind
+- React Email (for email templates)
+- React
+- Next.js
+- Tailwind CSS
 
 ### Infrastructure:
 
 - Fly.io for backend
 - Vercel for frontend
-- CockroachDB for database
-- [need research] for sending emails
+- CockroachDB Cloud for database
+- Resend for sending emails
