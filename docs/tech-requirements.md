@@ -10,7 +10,7 @@ Navigation:
 - [Customers](#customers)
 - [Multilanguage](#multilanguage)
 - [Webhooks](#webhooks)
-- [AI](#ai)
+- [AI (maybe)](#ai)
 - [Analytics](#analytics)
 - [Technologies](#technologies)
 - [Competitors](#competitors)
@@ -212,7 +212,7 @@ So we want to add some really basic webhook support. Maybe just one webhook for 
 It will be cool at least for experience, but it also can be very useful.
 For example you want to send some additional email when user buy some specific product.
 
-## AI
+## AI (maybe)
 
 Maybe to be in step with modernity we can use AI. Some examples:
 
