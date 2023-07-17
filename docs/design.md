@@ -11,9 +11,12 @@ Pages:
   - List of products to manage
   - Delete confirmation
   - Draft and published products
-- Categories management
+- Categories management (top categories I suppose)
 - Contact form
 - Informational pages like blog
+- Orders history
+- Reviews (shop, products)
+- Subscribers
 - Settings
 
 ## Functional part
