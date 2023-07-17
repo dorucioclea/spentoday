@@ -1,6 +1,7 @@
 # Technical requirements
 
-All platform is reading oriented (fast read, slower write)
+[How to make money from Spentoday](./business.md) is another file.
+All platform is reading oriented (fast read, slower write).
 
 Navigation:
 
