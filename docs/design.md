@@ -1,5 +1,21 @@
 # All about design
 
+Pages, UX, ...
+
+## Shop management
+
+Pages:
+
+- Product management
+  - Product creation/editing
+  - List of products to manage
+  - Delete confirmation
+  - Draft and published products
+- Categories management
+- Contact form
+- Informational pages like blog
+- Settings
+
 ## Functional part
 
 Here is the list of websites, that small shops/businesses have.
