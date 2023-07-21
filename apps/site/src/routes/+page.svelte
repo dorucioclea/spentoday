@@ -1,6 +1,19 @@
 <script lang="ts">
-  import { PUBLIC_API_URL } from '$env/static/public';
+  import type { PageData } from "./$types"
+
+  export let data: PageData
 </script>
 
-<h1>{PUBLIC_API_URL}</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<!-- Landing page -->
+
+<svelte:head>
+  <title>Spentoday</title>
+  <meta
+    name="description"
+    content="Заробляйте більше, працюй меньше з онлайн магазином"
+  />
+</svelte:head>
+
+<h1 class="text-5xl md:text-9xl text-primary-500 text-center mt-20 font-extrabold">
+  Spentoday
+</h1>
