@@ -45,3 +45,16 @@ Things we should know about prospect to continue working with:
 3. They are not scammers (we don't want such people on our platform)
 4.
 5.
+
+## Proof of competence
+
+We need to open an online shop as fast as we relese v1. And we should make tutorials,
+so we can showcase it to any prospect client.
+
+Send them example of shop, that we built and they believe much more.
+
+## Message
+
+Opening online shop is easy and quick now.
+Not connected to a platform rules.
+Built in beautiful design.

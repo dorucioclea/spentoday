@@ -7,29 +7,43 @@ Selling platform of future for customers and business owners.
 
 Website: [comming soon]
 
-GitHub repo: [flurium/spentoday](https://github.com/flurium/spentoday)
+Api GitHub repo: [flurium/spentoday-api](https://github.com/flurium/spentoday-api)
 
 Spelling: spen + to + day (do it as italian)
 
 Technical requirements!: [docs/tech-requirements](./docs/tech-requirements.md)
 
-### Backend echnologies:
+<!--
+# Turborepo Svelte starter
 
-- Asp.Net Core
-- CockroachDB
-- Entity Framework Core
-- Docker
+This is an official starter Turborepo.
 
-### Frontend technologies:
+## Using this example
 
-- React Email (for email templates)
-- React
-- Next.js
-- Tailwind CSS
+Run the following command:
 
-### Infrastructure:
+```sh
+npx create-turbo@latest -e with-svelte
+```
 
-- Fly.io for backend
-- Vercel for frontend
-- CockroachDB Cloud for database
-- Resend for sending emails
+## What's inside?
+
+This Turborepo includes the following packages/apps:
+
+### Apps and Packages
+
+- `docs`: a [svelte-kit](https://kit.svelte.dev/) app
+- `web`: another [svelte-kit](https://kit.svelte.dev/) app
+- `ui`: a stub Svelte component library shared by both `web` and `docs` applications
+- `eslint-config-custom`: `eslint` configurations (includes `eslint-plugin-svelte` and `eslint-config-prettier`)
+
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+
+### Utilities
+
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
+ -->
