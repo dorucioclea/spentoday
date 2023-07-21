@@ -1,6 +1,7 @@
-import { Api } from "$lib"
+import { Api } from "lib"
 import { error, redirect } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
+import { api } from "$lib"
 
 // export const ssr = false // if just client side rendering
 
@@ -15,10 +16,10 @@ type DashboardShop = {
 
 */
 
-export const load = (async (event) => {
-  const response = await Api.callSecure(event.fetch, "/api/dashboard/shops")
+export const load = (async ({ fetch, url }) => {
+  const response = await Api.callSecure(fetch, api("/api/dashboard/shops"))
 
-  console.log(event.url)
+  console.log(url)
 
   if (!response) throw error(500)
 

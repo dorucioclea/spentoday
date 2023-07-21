@@ -1,15 +1,16 @@
-import type { PageLoad } from './$types';
-// import { Api } from '$lib';
-import { redirect } from '@sveltejs/kit';
+import type { PageLoad } from "./$types"
+import { Api } from "lib"
+import { redirect } from "@sveltejs/kit"
+import { api } from "$lib"
 
 type FullProduct = {
-  name: string;
-  price: string;
-  images: string[];
+  name: string
+  price: string
+  images: string[]
 
-  seoTitle: string;
-  seoDescription: string;
-};
+  seoTitle: string
+  seoDescription: string
+}
 
 /*
 
@@ -18,20 +19,22 @@ type FullProduct = {
 - categories
 - properties
 
-
 */
 
 export const load = (async ({ url, fetch, params }) => {
-  const domain = url.hostname;
-  const product = params.product;
+  const domain = url.hostname
+  const product = params.product
 
   // fetch shop metadata and products
 
-  const response: any = {}; // await Api.callPublic(fetch, `/api/shop/${shop}/product/${product}`);
+  const response = await Api.callPublic(
+    fetch,
+    api(`/api/shop/${domain}/product/${product}`)
+  )
 
-  if (!response || !response.ok) throw redirect(302, `/${domain}`);
+  if (!response || !response.ok) throw redirect(302, `/${domain}`)
 
-  const json = (await response.json()) as FullProduct;
+  const json = (await response.json()) as FullProduct
 
-  return json;
-}) satisfies PageLoad;
+  return json
+}) satisfies PageLoad

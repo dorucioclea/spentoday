@@ -1,6 +1,6 @@
 ![Spentoday banner](./assets/banner.svg)
 
-#
+---
 
 If you are afraid of losing money, spend it today. Live without fear.
 Selling platform of future for customers and business owners.
@@ -12,6 +12,38 @@ Api GitHub repo: [flurium/spentoday-api](https://github.com/flurium/spentoday-ap
 Spelling: spen + to + day (do it as italian)
 
 Technical requirements!: [docs/tech-requirements](./docs/tech-requirements.md)
+
+## Developing
+
+Clone the repository:
+
+```bash
+git clone https://github.com/flurium/spentoday-frontend.git
+```
+
+Get inside of folder:
+
+```bash
+cd spentoday-frontend
+```
+
+Use dev branch:
+
+```bash
+git checkout dev
+```
+
+From install dependencies:
+
+```bash
+npm install
+```
+
+Start development server:
+
+```bash
+npm run dev
+```
 
 <!--
 # Turborepo Svelte starter

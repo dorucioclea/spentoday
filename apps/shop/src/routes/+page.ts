@@ -1,23 +1,21 @@
-// import { Api } from '$lib';
-import { error, redirect } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
-
-// for moving
-const Api: any = '';
+import { Api } from "lib"
+import { api } from "$lib"
+import { redirect } from "@sveltejs/kit"
+import type { PageLoad } from "./$types"
 
 type ShopProduct = {
-  name: string;
-  image: string;
-  price: string;
-};
+  name: string
+  image: string
+  price: string
+}
 
 type Shop = {
   seo: {
-    title: string;
-    description: string;
-  };
-  products: ShopProduct[];
-};
+    title: string
+    description: string
+  }
+  products: ShopProduct[]
+}
 
 /*
 
@@ -35,14 +33,14 @@ export const load = (async ({ url, fetch, params }) => {
   // const shop = params.shop;
 
   // shop.spentoday.com
-  const domen = url.host;
+  const domen = url.hostname
 
   // fetch shop metadata and products
-  const response = await Api.callPublic(fetch, `/api/shop/${domen}`);
+  const response = await Api.callPublic(fetch, api(`/api/shop/${domen}`))
 
-  if (!response || !response.ok) throw redirect(302, '/');
+  if (!response || !response.ok) throw redirect(302, "/")
 
-  const json = (await response.json()) as Shop;
+  const json = (await response.json()) as Shop
 
-  return { shop: json };
-}) satisfies PageLoad;
+  return { shop: json }
+}) satisfies PageLoad

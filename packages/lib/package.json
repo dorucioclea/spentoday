@@ -1,18 +1,15 @@
 {
-  "name": "ui",
+  "name": "lib",
   "version": "0.0.1",
-  "description": "Styles and components for spentoday",
+  "description": "Shared library for spentoday",
   "type": "module",
   "module": "index.ts",
-  "svelte": "index.ts",
   "license": "MIT",
   "scripts": {
     "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
-    "svelte": "^4.0.5",
-    "tailwindcss": "^3.3.3"
+    "eslint-config-custom": "*"
   }
 }
