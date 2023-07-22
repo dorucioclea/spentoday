@@ -12,8 +12,9 @@
     "format": "prettier --ignore-path=../../.prettierignore --write ."
   },
   "dependencies": {
+    "lib": "*",
     "ui": "*",
-    "lib": "*"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
