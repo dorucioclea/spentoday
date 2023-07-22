@@ -18,3 +18,5 @@
 </header>
 
 <slot />
+
+<footer class="mt-20" />

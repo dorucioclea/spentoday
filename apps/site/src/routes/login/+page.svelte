@@ -1,33 +1,35 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
+  import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
+  import { LoginStatus } from "lib/api"
   import { z } from "zod"
 
   const emailSchema = z.string().email()
 
   let email: string = ""
   let password: string = ""
-  let message: string | null
+  let message: string | null = null
 
-  function isEmailCorrect(email: string) {
-    const result = emailSchema.safeParse(email)
-    return result.success
-  }
+  $: isEmailCorrect = emailSchema.safeParse(email).success
 
   async function login() {
-    const response = await Api.callPublic(fetch, "/api/auth/login", "POST")
+    const loginStatus = await Api.login(fetch, PUBLIC_API_URL, email, password)
 
-    if (!response) {
-      message = "Can't communicate with server. Try later!"
-      return
-    }
-
-    if (response.ok) {
+    if (loginStatus == LoginStatus.Success) {
       goto("/dashboard")
       return
     }
 
-    // do better error handling
+    if (loginStatus == LoginStatus.IncorrectPassword) {
+      message = "Password is incorrect."
+      return
+    }
+
+    if (loginStatus == LoginStatus.EmailNotFound) {
+      message = "User with provided email isn't found."
+      return
+    }
 
     message = "We can't login you right now. Try later!"
   }
@@ -35,13 +37,8 @@
 
 <svelte:head>
   <title>Login to Spentoday</title>
+  <meta name="description" content="Login to Spentoday to start earning money online." />
 </svelte:head>
-
-<!-- {#if message}
-  <div class="text-xl text-red-500">
-    {message}
-  </div>
-{/if} -->
 
 <main class="min-h-[70vh] max-w-screen-xl m-auto pt-20 px-6">
   <h1 class="text-4xl md:text-6xl text-center m-auto font-bold">Login</h1>
@@ -49,6 +46,12 @@
     By login you accept our Terms of Servic and Privacy Policy. And get closer to making
     money.
   </p>
+
+  {#if message}
+    <div class="text-xl text-red-500">
+      {message}
+    </div>
+  {/if}
 
   <form
     on:submit|preventDefault={login}
@@ -69,11 +72,19 @@
     />
 
     <button
-      class="bg-primary-500 disabled:bg-gray-100 font-semibold px-6 py-3 text-white hover:bg-primary-400 disabled:text-gray-400 rounded-md"
+      class="bg-primary-500 disabled:bg-gray-100 font-semibold px-6 py-3 text-white
+       hover:bg-primary-400 disabled:text-gray-400 rounded-md"
       type="submit"
-      disabled={email.trim() == "" || !isEmailCorrect(email)}
+      disabled={password.trim() == "" || !isEmailCorrect}
     >
       Login
     </button>
   </form>
+
+  <a
+    href="/register"
+    class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2 mt-8 block text-center"
+  >
+    Don't have an account? Register.
+  </a>
 </main>

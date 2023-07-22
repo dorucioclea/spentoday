@@ -1,27 +1,51 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
+  import { z } from "zod"
+  import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
 
-  let name: string
-  let email: string
-  let password: string
-  let confirmPassword: string
-  let message: string | null
+  const emailSchema = z.string().email()
+
+  let name: string = ""
+  let email: string = ""
+  let password: string = ""
+  let confirmPassword: string = ""
+
+  let message: string | null = "Password mismatches confirm password."
+
+  $: isInvalid =
+    confirmPassword.trim() == "" ||
+    password.trim() == "" ||
+    name.trim() == "" ||
+    !emailSchema.safeParse(email).success
 
   async function register() {
-    const response = await Api.callPublic(fetch, "/api/auth/register", "POST")
-
-    if (!response) {
-      message = "Can't communicate with server. Try later!"
+    if (password != confirmPassword) {
+      message = "Password mismatches confirm password."
       return
     }
 
-    if (response.ok) {
+    const status = await Api.register(fetch, PUBLIC_API_URL, {
+      name,
+      email,
+      password,
+      confirmPassword
+    })
+
+    if (status == Api.RegisterStatus.Success) {
       goto("/dashboard")
       return
     }
 
-    // do better error handling
+    if (status == Api.RegisterStatus.EmailIsTaken) {
+      message = "User with such email already exists."
+      return
+    }
+
+    if (status == Api.RegisterStatus.PasswordsMismatch) {
+      message = "Password mismatches confirm password."
+      return
+    }
 
     message = "We can't register you right now. Try later!"
   }
@@ -29,28 +53,71 @@
 
 <svelte:head>
   <title>Register at Spentoday</title>
+  <meta
+    name="description"
+    content="Register at Spentoday to start earning money online."
+  />
 </svelte:head>
 
-<h1>Register</h1>
+<main class="min-h-[70vh] max-w-screen-xl m-auto px-6">
+  <h1 class="text-4xl md:text-6xl text-center m-auto font-bold">Register</h1>
+  <p class="text-center text-gray-600 mt-6 max-w-3xl m-auto mb-10">
+    By registering you accept our Terms of Servic and Privacy Policy. And get closer to
+    making money.
+  </p>
 
-{#if message}
-  <div class="text-xl text-red-500">
-    {message}
-  </div>
-{/if}
+  <form
+    on:submit|preventDefault={register}
+    class="max-w-lg m-auto flex flex-col gap-4 mt-2"
+  >
+    {#if message}
+      <div class="px-5 py-3 border border-red-200 bg-red-100 rounded-md text-red-800">
+        {message}
+      </div>
+    {/if}
 
-<form on:submit|preventDefault={register}>
-  <label for="name">Full name</label>
-  <input bind:value={name} id="name" />
+    <input
+      class="bg-gray-100 focus:bg-gray-50 px-6 py-4 rounded-md border border-gray-200"
+      bind:value={name}
+      placeholder="Your name"
+    />
 
-  <label for="email">Email</label>
-  <input type="email" bind:value={email} id="email" />
+    <input
+      class="bg-gray-100 focus:bg-gray-50 px-6 py-4 rounded-md border border-gray-200"
+      bind:value={email}
+      type="email"
+      placeholder="Email address..."
+    />
 
-  <label for="password">Password</label>
-  <input type="password" bind:value={password} id="password" />
+    <input
+      class="bg-gray-100 focus:bg-gray-50 px-6 py-4 rounded-md border border-gray-200"
+      bind:value={password}
+      type="password"
+      placeholder="Password"
+    />
 
-  <label for="confirmPassword">Confirm password</label>
-  <input type="password" bind:value={confirmPassword} id="confirmPassword" />
+    <input
+      class="bg-gray-100 focus:bg-gray-50 px-6 py-4 rounded-md border border-gray-200"
+      bind:value={confirmPassword}
+      type="password"
+      placeholder="Confirm Password"
+    />
 
-  <button type="submit">Register</button>
-</form>
+    <button
+      class="bg-primary-500 disabled:bg-gray-100 font-semibold px-6 py-3 text-white
+       hover:bg-primary-400 disabled:text-gray-400 rounded-md"
+      type="submit"
+      disabled={isInvalid}
+    >
+      Register
+    </button>
+  </form>
+
+  <a
+    href="/login"
+    class="underline decoration-primary-100 hover:decoration-primary-300 decoration-2
+    mt-8 block text-center"
+  >
+    Already have an account? Login.
+  </a>
+</main>

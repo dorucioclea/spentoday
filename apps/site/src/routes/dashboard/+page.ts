@@ -17,14 +17,13 @@ type DashboardShop = {
 */
 
 export const load = (async ({ fetch, url }) => {
-  const response = await Api.callSecure(fetch, api("/api/dashboard/shops"))
+  const response = await Api.callSecure(fetch, api("/v1/dashboard/shops"))
 
   console.log(url)
 
   if (!response) throw error(500)
 
-  if (response.status == 403 || response.status == 401)
-    throw redirect(302, "/dashboald/login")
+  if (response.status == 403 || response.status == 401) throw redirect(302, "/login")
 
   if (!response.ok) throw redirect(302, "/")
 
