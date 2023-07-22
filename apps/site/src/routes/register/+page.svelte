@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import { Api } from "$lib"
+  import { Api } from "lib"
 
   let name: string
   let email: string
