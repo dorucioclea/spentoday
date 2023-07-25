@@ -5,7 +5,7 @@ export type Fetch = (
   init?: RequestInit | undefined
 ) => Promise<Response>
 
-export function formBody(body?: FormData | object): BodyInit | null {
+function formBody(body?: FormData | object): BodyInit | null {
   if (!body) return null
 
   if (body instanceof FormData) return body
@@ -15,15 +15,18 @@ export function formBody(body?: FormData | object): BodyInit | null {
 
 export async function callSecure(
   fetch: Fetch,
-  route: string | URL,
+  base: string,
+  route: `/${string}`,
   method: HttpMethod = "GET",
   body?: FormData | object
 ): Promise<Response | null> {
   try {
-    const response = await fetch(route, {
+    const response = await fetch(new URL(route, base), {
       method: method,
       credentials: "include",
       headers: {
+        "Content-Type":
+          body instanceof FormData ? "multipart/form-data" : "application/json",
         accept: "application/json",
         "double-submit": "uhe1"
       },
@@ -47,6 +50,8 @@ export async function callPublic(
     const response = await fetch(new URL(route, base), {
       method: method,
       headers: {
+        "Content-Type":
+          body instanceof FormData ? "multipart/form-data" : "application/json",
         accept: "application/json"
       },
       body: formBody(body)
@@ -58,8 +63,13 @@ export async function callPublic(
   }
 }
 
-export function url(base: string, path: string) {
-  return new URL(path, base)
+/** Return json from response or null if error appeared. */
+export async function responseJson<T>(response: Response): Promise<T | null> {
+  try {
+    return (await response.json()) as T
+  } catch {
+    return null
+  }
 }
 
 export const NOT_FOUND = 404

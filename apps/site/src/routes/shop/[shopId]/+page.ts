@@ -8,10 +8,10 @@ Need:
 
 */
 
-export const load = (async ({ fetch, url }) => {
-  const domain = url.hostname
+export const load = (async ({ fetch, params }) => {
+  const shopId = params.shopId
 
   return {
-    domain
+    shopId
   }
 }) satisfies PageLoad

@@ -11,7 +11,7 @@
   let password: string = ""
   let confirmPassword: string = ""
 
-  let message: string | null = "Password mismatches confirm password."
+  let message: string | null = null
 
   $: isInvalid =
     confirmPassword.trim() == "" ||

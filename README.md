@@ -39,6 +39,25 @@ From install dependencies:
 npm install
 ```
 
+Set environment variable on your machine, so it works with local backend.
+Not in .env file, but in machine settings.
+
+```bash
+NODE_TLS_REJECT_UNAUTHORIZED=0
+```
+
+Setup .env file for `site` with such variables:
+
+```bash
+PUBLIC_API_URL=https://localhost:44303
+```
+
+Setup .env file for `shop` with such variables:
+
+```bash
+PUBLIC_API_URL=https://localhost:44303
+```
+
 Start development server:
 
 ```bash

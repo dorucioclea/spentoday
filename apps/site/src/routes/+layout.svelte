@@ -17,6 +17,7 @@
   </nav>
 </header>
 
-<slot />
-
+<main class="px-6">
+  <slot />
+</main>
 <footer class="mt-20" />

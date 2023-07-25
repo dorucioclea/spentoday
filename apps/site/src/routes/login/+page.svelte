@@ -83,7 +83,8 @@
 
   <a
     href="/register"
-    class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2 mt-8 block text-center"
+    class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
+      mt-8 block text-center"
   >
     Don't have an account? Register.
   </a>
