@@ -18,13 +18,13 @@ Technical requirements!: [docs/tech-requirements](./docs/tech-requirements.md)
 Clone the repository:
 
 ```bash
-git clone https://github.com/flurium/spentoday-frontend.git
+git clone https://github.com/flurium/spentoday.git
 ```
 
 Get inside of folder:
 
 ```bash
-cd spentoday-frontend
+cd spentoday
 ```
 
 Use dev branch:
@@ -58,43 +58,80 @@ Setup .env file for `shop` with such variables:
 PUBLIC_API_URL=https://localhost:44303
 ```
 
-Start development server:
+Start all development servers:
 
 ```bash
 npm run dev
 ```
 
-<!--
-# Turborepo Svelte starter
+Start site:
 
-This is an official starter Turborepo.
-
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-svelte
+```bash
+npm run dev:site
 ```
 
-## What's inside?
+Start shop:
 
-This Turborepo includes the following packages/apps:
+```bash
+npm run dev:shop
+```
 
-### Apps and Packages
+To run type checks to generate types, you need to go to an app. For example, site:
 
-- `docs`: a [svelte-kit](https://kit.svelte.dev/) app
-- `web`: another [svelte-kit](https://kit.svelte.dev/) app
-- `ui`: a stub Svelte component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-plugin-svelte` and `eslint-config-prettier`)
+```bash
+cd apps/site
+```
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+And run next command to watch for code changes and generate types when changes appear:
 
-### Utilities
+```bash
+npm run check:watch
+```
 
-This Turborepo has some additional tools already setup for you:
+## Svelte
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
- -->
+To create new route you should create new folder inside of `src/routes`. For example,
+`page`, so you will have folder `src/routes/page`.
+
+Inside of folder you should create 2 files: `+page.svelte` and `+page.ts`. `+page.svelte`
+will contain UI and client side functionality. In `+page.ts` you will have universal load
+function. Universal `load` will be called on the server at first request and then will be
+called on client for further navigation.
+
+To start requesting data in `+page.ts` you should use next code:
+
+```ts
+import { PUBLIC_API_URL } from "$env/static/public"
+import type { PageLoad } from "./$types"
+import { Api } from "lib"
+
+export const load = (async ({ fetch, params }) => {
+  const response = await Api.callSecure(fetch, PUBLIC_API_URL, `/route-to-request`)
+
+  // more code...
+
+  return {
+    list: [] // any data
+  }
+}) satisfies PageLoad
+```
+
+Then to access this data in `+page.svelte` you should use next code:
+
+```svelte
+<script lang="ts">
+  import type { PageData } from "./$types"
+
+  export let data: PageData
+</script>
+
+{#each data.list as element}
+  <div>Now you have access to {element} on ui</div>
+{/each}
+```
+
+To make types work rerun from `apps/site` the command in terminal:
+
+```bash
+npm run check:watch
+```
