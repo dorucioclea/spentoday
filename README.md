@@ -135,3 +135,8 @@ To make types work rerun from `apps/site` the command in terminal:
 ```bash
 npm run check:watch
 ```
+
+### Resources to learn Svelte
+
+- [Svelte Docs](https://svelte.dev/docs/) for ui.
+- [SvelteKit Docs](https://kit.svelte.dev/docs/) for loading data, server-side renderin, routing.
