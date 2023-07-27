@@ -28,6 +28,7 @@ export async function login(
     email: email,
     password: password
   })
+  console.log(response)
   if (!response) return LoginStatus.Fail
 
   if (response.ok) return LoginStatus.Success

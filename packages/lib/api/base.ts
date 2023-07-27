@@ -49,6 +49,7 @@ export async function callPublic(
   try {
     const response = await fetch(new URL(route, base), {
       method: method,
+      credentials: "include",
       headers: {
         "Content-Type":
           body instanceof FormData ? "multipart/form-data" : "application/json",
