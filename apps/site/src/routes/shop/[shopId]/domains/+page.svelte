@@ -10,13 +10,11 @@
   let domainInput: string = ""
 
   async function addDomain() {
-    const response = await Api.callSecure(
-      fetch,
-      PUBLIC_API_URL,
-      `/v1/domains/${data.shopId}`,
-      "POST",
-      { domain: domainInput }
-    )
+    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+      route: `/v1/domains/${data.shopId}`,
+      method: "POST",
+      body: { domain: domainInput }
+    })
     if (!response) {
       alert("Can't add domain at the current moment.")
       return
@@ -55,12 +53,10 @@
   }
 
   async function removeDomain(domain: string) {
-    const response = await Api.callSecure(
-      fetch,
-      PUBLIC_API_URL,
-      `/v1/domains/${data.shopId}/${domain}`,
-      "DELETE"
-    )
+    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+      route: `/v1/domains/${data.shopId}/${domain}`,
+      method: "DELETE"
+    })
     if (!response) return alert("Can't remove now")
 
     const json = Api.responseJson(response)
@@ -74,12 +70,10 @@
   }
 
   async function verifyDomain(domain: string) {
-    const response = await Api.callSecure(
-      fetch,
-      PUBLIC_API_URL,
-      `/v1/domains/${domain}/verify`,
-      "PATCH"
-    )
+    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+      route: `/v1/domains/${domain}/verify`,
+      method: "PATCH"
+    })
     if (!response) return alert("something wrong")
 
     if (response.status == 200) {

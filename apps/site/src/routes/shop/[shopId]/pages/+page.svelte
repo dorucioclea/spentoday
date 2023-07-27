@@ -33,13 +33,11 @@
       return
     }
 
-    const response = await Api.callSecure(
-      fetch,
-      PUBLIC_API_URL,
-      `/v1/dashboard/${data.shopId}/page`,
-      "POST",
-      { slug: newPageSlug }
-    )
+    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+      route: `/v1/dashboard/${data.shopId}/page`,
+      method: "POST",
+      body: { slug: newPageSlug }
+    })
     if (!response) return
 
     if (response.status == 401 || response.status == 403) {

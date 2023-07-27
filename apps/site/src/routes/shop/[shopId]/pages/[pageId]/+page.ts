@@ -4,7 +4,10 @@ import { Api } from "lib"
 
 export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
-  const response = Api.callSecure(fetch, PUBLIC_API_URL, "/v1/")
+  const response = Api.secureFetch(fetch, PUBLIC_API_URL, {
+    route: "/v1/",
+    method: "GET"
+  })
 
   return {
     shopId

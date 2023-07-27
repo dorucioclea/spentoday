@@ -17,13 +17,11 @@
   }
 
   async function search() {
-    const response = await Api.shopOrders(
-      fetch,
-      PUBLIC_API_URL,
-      data.shopId,
-      customerEmail,
-      productName
-    )
+    const response = await Api.shopOrders(fetch, PUBLIC_API_URL, {
+      shop: data.shopId,
+      customerEmail: customerEmail,
+      productName: productName
+    })
     if (response == null) return
     orders = response
   }

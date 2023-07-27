@@ -13,6 +13,7 @@ function formBody(body?: FormData | object): BodyInit | null {
   return JSON.stringify(body)
 }
 
+/** Depricated: should use secureFetch */
 export async function callSecure(
   fetch: Fetch,
   base: string,
@@ -39,6 +40,76 @@ export async function callSecure(
   }
 }
 
+type CallInfo = {
+  route: `/${string}`
+  method: HttpMethod
+  body?: FormData | object
+}
+
+/** Send request to secure route of api */
+export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
+  try {
+    let headers = new Headers({
+      accept: "application/json",
+      "double-submit": "ueqc1"
+    })
+
+    let body = undefined
+    if (info.body) {
+      if (info.body instanceof FormData) {
+        headers.append("content-type", "multipart/form-data")
+        body = info.body
+      } else {
+        headers.append("content-type", "application/json")
+        body = JSON.stringify(info.body)
+      }
+    }
+
+    const response = await fetch(new URL(info.route, base), {
+      method: info.method,
+      credentials: "include",
+      headers: headers,
+      body: body
+    })
+
+    return response
+  } catch {
+    return null
+  }
+}
+
+/** Send request to public route of api */
+export async function publicFetch(fetch: Fetch, base: string, info: CallInfo) {
+  try {
+    let headers = new Headers({
+      accept: "application/json"
+    })
+
+    let body = undefined
+    if (info.body) {
+      if (info.body instanceof FormData) {
+        headers.append("content-type", "multipart/form-data")
+        body = info.body
+      } else {
+        headers.append("content-type", "application/json")
+        body = JSON.stringify(info.body)
+      }
+    }
+
+    const response = await fetch(new URL(info.route, base), {
+      method: info.method,
+      credentials: "include",
+      headers: headers,
+      body: body
+    })
+
+    return response
+  } catch {
+    return null
+  }
+}
+
+/** Depricated: should use publicFetch */
 export async function callPublic(
   fetch: Fetch,
   base: string,

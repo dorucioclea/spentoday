@@ -20,11 +20,11 @@ export type ShopDomain = {
 export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
 
-  const response = await Api.callSecure(fetch, PUBLIC_API_URL, `/v1/domains/${shopId}`)
-  if (response == null)
-    return {
-      domains: []
-    }
+  const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+    route: `/v1/domains/${shopId}`,
+    method: "GET"
+  })
+  if (response == null) return { domains: [] }
 
   const data = await Api.responseJson<ShopDomain[]>(response)
   if (data == null) return {}

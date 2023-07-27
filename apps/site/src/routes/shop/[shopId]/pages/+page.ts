@@ -16,11 +16,10 @@ type Page = {
 }
 
 export const load = (async ({ fetch, params }) => {
-  const response = await Api.callPublic(
-    fetch,
-    PUBLIC_API_URL,
-    `/v1/dashboard/${params.shopId}/pages`
-  )
+  const response = await Api.publicFetch(fetch, PUBLIC_API_URL, {
+    route: `/v1/dashboard/${params.shopId}/pages`,
+    method: "GET"
+  })
   if (!response) return { pages: [] as Page[] } //throw error(500)
 
   const json = await Api.responseJson<PageResponse[]>(response)

@@ -1,5 +1,5 @@
 import type { Fetch } from "./base"
-import { BAD_REQUEST, CONFLICT, NOT_FOUND, callPublic } from "./base"
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, callPublic, publicFetch } from "./base"
 
 /*
 
@@ -24,11 +24,15 @@ export async function login(
   email: string,
   password: string
 ): Promise<LoginStatus> {
-  var response = await callPublic(fetch, base, "/v1/auth/login", "POST", {
-    email: email,
-    password: password
+  var response = await publicFetch(fetch, base, {
+    route: "/v1/auth/login",
+    method: "POST",
+    body: {
+      email: email,
+      password: password
+    }
   })
-  console.log(response)
+
   if (!response) return LoginStatus.Fail
 
   if (response.ok) return LoginStatus.Success
@@ -69,11 +73,15 @@ export async function register(
     confirmPassword: string
   }
 ): Promise<RegisterStatus> {
-  const response = await callPublic(fetch, base, "/v1/auth/register", "POST", {
-    name: input.name,
-    email: input.email,
-    password: input.password,
-    confirmPassword: input.confirmPassword
+  const response = await publicFetch(fetch, base, {
+    route: "/v1/auth/register",
+    method: "POST",
+    body: {
+      name: input.name,
+      email: input.email,
+      password: input.password,
+      confirmPassword: input.confirmPassword
+    }
   })
 
   if (!response) return RegisterStatus.Fail
