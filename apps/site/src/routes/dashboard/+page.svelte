@@ -5,13 +5,16 @@
   import { z } from "zod"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
-    import type { DashboardShop } from "./+page"
+  import type { DashboardShop } from "./+page"
+
+  export let data: PageData
+  
+  $: shops = data.shops ?? []
 
   let shopName: string = ""
 
   $: isInvalid = shopName.trim() == ""
-    
-  $: shops = data.shops ?? []
+
   async function addShop() {
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
      route: "/v1/dashboard/addshop",
@@ -28,14 +31,16 @@
     if (!response.ok) throw redirect(302, "/")
 
     if (response.ok) {
-      const shop = (await Api.responseJson(response))as DashboardShop
+      const shop = await Api.responseJson<DashboardShop>(response)
+
+      if(!shop) return alert("error of adding")
+
       shops.push(shop)
       return
     }
 
   }
 
-  export let data: PageData
 </script>
 
 <form
