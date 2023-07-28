@@ -4,6 +4,4 @@
   export let data: PageData
 </script>
 
-{#each data.shops as shop}
-  <div>{shop.name}</div>
-{/each}
+<div>{JSON.stringify(data.me)}</div>
