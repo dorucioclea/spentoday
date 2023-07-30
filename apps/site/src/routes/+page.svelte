@@ -8,25 +8,69 @@
   />
 </svelte:head>
 
+<header class="px-5 py-8 max-w-screen-xl m-auto flex justify-between items-center">
+  <nav class="basis-1/4">
+    <a class="text-primary-500 font-bold text-2xl" href="/">Spentoday</a>
+  </nav>
+
+  <nav class="flex-1 justify-center flex gap-5">
+    <a href="/#benefits">Переваги</a>
+    <a href="/#price">Ціна</a>
+    <a href="/#faq">FAQ</a>
+  </nav>
+
+  <nav class="basis-1/4 text-right">
+    <a class="px-8 py-2 rounded-full bg-primary-400" href="/login">Почати</a>
+  </nav>
+</header>
+
 <main class="min-h-[70vh] max-w-screen-xl m-auto pt-20 px-6">
-  <a
-    class="m-auto block w-fit px-4 py-2 rounded-full border bg-gray-100 border-gray-200"
-    href="https://github.com/flurium/spentoday"
-    target="_blank"
-  >
-    Star us on GitHub
-  </a>
-
   <h1 class="text-4xl md:text-6xl text-center mt-10 font-extrabold">
-    Rethinking Online Commerce
+    ІДЕАЛЬНИЙ <span class="text-primary-500">СТАРТ</span> ОНЛАЙН-БІЗНЕСУ
   </h1>
-  <p class="text-center text-gray-600 mt-8 mb-6 max-w-3xl m-auto">
-    Spentoday is open-source platform to open online shop FAST and EASY. No need to hire
-    designer, developer. No need to wase time. Open online shop in 10 minutes.
-  </p>
 
-  <a
-    class="m-auto block w-fit px-6 py-3 text-md bg-primary-500 hover:bg-primary-600 rounded-md text-white font-semibold"
-    href="/login">Get started</a
-  >
+  <section class="py-10" id="benefits">
+    <h3>Чому ми?</h3>
+
+    <ul class="flex flex-col gap-10">
+      <li class="flex gap-10 border-b border-b-black pb-4">
+        <div class="border border-black aspect-square h-24" />
+        <div>
+          <h4 class="text-4xl font-semibold">Унікальний дизайн</h4>
+          <p class="mt-2 max-w-md">
+            Наші дизайнери створять дизайн, який виділяється серед конкурентів і
+            відображає ваш бренд.
+          </p>
+        </div>
+      </li>
+      <li class="flex gap-10 border-b border-b-black pb-4">
+        <div class="border border-black aspect-square h-24" />
+        <div>
+          <h4 class="text-4xl font-semibold">Користувацький досвід</h4>
+          <p class="mt-2 max-w-md">
+            Наша платформа забезпечує зручну навігацію, швидке завантаження і просте
+            замовлення товарів.
+          </p>
+        </div>
+      </li>
+      <li class="flex gap-10 border-b border-b-black pb-4">
+        <div class="border border-black aspect-square h-24" />
+        <div>
+          <h4 class="text-4xl font-semibold">Простота</h4>
+          <p class="mt-2 max-w-md">
+            Ми об'єднали інструменти Shopify і Rozetka для зрозумілості і легкості
+            використання.
+          </p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="py-10" id="faq">
+    <h3>FAQ</h3>
+  </section>
+
+  <section class="py-10" id="price">
+    <h3>Price</h3>
+  </section>
 </main>
