@@ -88,4 +88,12 @@
   >
     Don't have an account? Register.
   </a>
+
+  <a
+    href="/forgot"
+    class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
+      mt-8 block text-center"
+  >
+    Forgot Password
+  </a>
 </main>

@@ -2,7 +2,9 @@
   import "../app.css"
 </script>
 
-<header class="px-5 py-8 max-w-screen-xl m-auto flex justify-between items-center">
+<header
+  class="px-5 py-8 max-w-screen-xl m-auto flex justify-between items-center selection:bg-primary-300 selection:bg-opacity-75"
+>
   <nav>
     <a class="text-primary-500 font-bold text-2xl" href="/">Spentoday</a>
   </nav>
@@ -17,7 +19,7 @@
   </nav>
 </header>
 
-<main class="px-6">
+<main class="px-6 selection:bg-primary-300 selection:bg-opacity-75">
   <slot />
 </main>
-<footer class="mt-20" />
+<footer class="mt-20 selection:bg-primary-300 selection:bg-opacity-75" />

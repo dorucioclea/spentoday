@@ -67,6 +67,7 @@
   }
 </script>
 
+
 <form
     on:submit|preventDefault={addShop}
     class="max-w-lg m-auto flex flex-col gap-4 mt-2"
@@ -116,4 +117,3 @@ to Shop
 {/each}
 </div>
 </div>
-

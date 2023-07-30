@@ -90,3 +90,27 @@ export async function register(
   if (response.status == BAD_REQUEST) return RegisterStatus.PasswordsMismatch
   return RegisterStatus.Fail
 }
+
+
+export enum ForgotStatus {
+  Success,
+  Fail
+}
+
+export async function forgot(
+  fetch: Fetch,
+  base: string,
+  email: string
+): Promise<ForgotStatus> {
+  const response = await publicFetch(fetch, base, {
+    route: "/v1/auth/forgot",
+    method: "POST",
+    body: {
+      email: email
+    }
+  })
+
+  if (!response) return ForgotStatus.Fail
+  if (response.ok) return ForgotStatus.Success
+  return ForgotStatus.Fail
+}
