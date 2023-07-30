@@ -1,7 +1,8 @@
 # Technical requirements
 
 [How to make money from Spentoday](./business.md) is another file.
-All platform is reading oriented (fast read, slower write).
+
+We provide service to easily and fast open store.
 
 Navigation:
 
@@ -18,29 +19,14 @@ Navigation:
 
 ## Auth
 
-Auth should be as easy as possible for user.
-
-That's why we should support sign in with external providers as well as password. External providers allways are prefered way, because you don't need to remember password.
-
-I think we should also make it inside of modal. Because redirecting user to another page makes user less comfortable.
-
-All users are registered same way, customer or business owner doesn't matter.
-We keep one auth system for all shops inside the platform.
-
-Options for login:
-
-- email and password
-- google
+Email and password is main option to login, because people don't want to rely on other
+providers.
 
 We need **accept of Terms of Service**. It's going to be checkbox or label "By creating account at our service you accept our Terms of Service".
 
 **Forgot password** options should be also available. Send email with link to reset password.
 
 Check: [dashboard.render.com](https://dashboard.render.com/) for good example.
-
-## Chat
-
-I think customers should be able to chat with shops' admins. Maybe we can make it premium feture. Or only if you have problems with shipping, etc.
 
 ## Business
 
@@ -66,13 +52,13 @@ When business share link to their shop, they often don't want users to be able t
 
 Trial plan is nessasary to give opportunity to try service. But it should be limited, because we need to gain money. Ideas for current stage:
 
-|           | Trial | Pro  | Business  |
-| --------- | ----- | ---- | --------- |
-| Price     | 0 $   | 25 $ | 100 $     |
-| Support   | q&a   | 24/7 | 24/7      |
-| Products  | 3     | 1000 | unlimited |
-| Workers   | 2     | 10   | unlimited |
-| Analytics | no    | full | full      |
+|           | Trial | Pro  | Business | Enterprice   |
+| --------- | ----- | ---- | -------- | ------------ |
+| Price     | 0 $   | 25 $ | 100 $    | custom       |
+| Support   | q&a   | 24/7 | 24/7     | 24/7 primary |
+| Products  | 3     | 1000 | 5000     | unlimited    |
+| Workers   | 2     | 10   | 100      | unlimited    |
+| Analytics | no    | full | full     | full         |
 
 ### Products
 
@@ -122,7 +108,7 @@ For example: main color of shop, banner of shop.
 - logo
 - main color (maybe secondary)
 - links to social media
-- additional inform ation pages? (markdown)
+- additional inform ation pages
 - seo:
   - title
   - description
