@@ -1,9 +1,6 @@
-import { Api } from "lib"
-import { error, redirect } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
 import { PUBLIC_API_URL } from "$env/static/public"
-
-// export const ssr = false // if just client side rendering
+import { Api } from "lib"
 
 export type DashboardShop = {
   name: string,
@@ -18,9 +15,8 @@ export type DashboardShop = {
 */
 
 export const load = (async ({ fetch, url }) => {
-
   
-  const response = await Api.secureFetch(fetch,PUBLIC_API_URL, 
+  const response = await Api.secureFetch(fetch, PUBLIC_API_URL, 
     {
       route:"/v1/dashboard/shops",
       method: "GET"
@@ -34,8 +30,9 @@ export const load = (async ({ fetch, url }) => {
 
   if (!response.ok) throw redirect(302, "/")
 
-  const shops = (await response.json()) as DashboardShop[]
+  const shops = await Api.responseJson<DashboardShop[]>(response)
 
   console.log(response.status);
   return { shops }
+
 }) satisfies PageLoad

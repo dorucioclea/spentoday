@@ -33,14 +33,7 @@ export const load = (async ({ url, fetch, params }) => {
   // const shop = params.shop;
 
   // shop.spentoday.com
-  const domen = url.hostname
+  const domain = url.hostname
 
-  // fetch shop metadata and products
-  const response = await Api.callPublic(fetch, api(`/api/shop/${domen}`))
-
-  if (!response || !response.ok) throw redirect(302, "/")
-
-  const json = (await response.json()) as Shop
-
-  return { shop: json }
+  return { domain: domain }
 }) satisfies PageLoad
