@@ -34,7 +34,7 @@ export const load = (async ({ fetch, url }) => {
 
   if (!response.ok) throw redirect(302, "/")
 
-  const shops = (await response.json()) as DashboardShop[]
+  const shops = await Api.responseJson<DashboardShop[]>(response)
 
   console.log(response.status);
   return { shops }
