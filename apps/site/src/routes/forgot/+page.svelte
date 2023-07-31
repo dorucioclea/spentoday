@@ -25,7 +25,7 @@ import { goto } from "$app/navigation"
 
 <svelte:head>
   <title>Forgot password</title>
-  <meta name="description" content="Login to Spentoday to start earning money online." />
+  <meta name="description" content="Forgot Password" />
 </svelte:head>
 
 <main class="min-h-[70vh] max-w-screen-xl m-auto pt-20 px-6">

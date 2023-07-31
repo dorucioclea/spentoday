@@ -114,3 +114,26 @@ export async function forgot(
   if (response.ok) return ForgotStatus.Success
   return ForgotStatus.Fail
 }
+
+export enum ConfirmStatus {
+  Success,
+  Fail
+}
+
+export async function confirm(
+  fetch: Fetch,
+  base: string,
+  token: string,
+  user: string
+): Promise<ConfirmStatus> {
+  var response = await publicFetch(fetch, base, {
+    route: `/v1/auth/confirm?token=${token}&user=${user}`,
+    method: "GET"
+  });
+
+  if (!response) return ConfirmStatus.Fail;
+
+  if (response.ok) return ConfirmStatus.Success;
+
+  return ConfirmStatus.Fail;
+}
