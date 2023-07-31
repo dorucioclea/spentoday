@@ -1,4 +1,4 @@
-import { responseJson, callSecure, callPublic, secureFetch } from "./base"
+import { publicFetch, responseJson, secureFetch } from "./base"
 import type { Fetch } from "./base"
 export async function dashboardShops() {}
 
@@ -42,6 +42,9 @@ export async function shopInfoPages(
   base: string,
   shop: string
 ): Promise<InfoPage[] | null> {
-  const response = await callPublic(fetch, base, `/v1/shop/${shop}/pages`)
+  const response = await publicFetch(fetch, base, {
+    route: `/v1/shop/${shop}/pages`,
+    method: "GET"
+  })
   return response ? await responseJson<InfoPage[]>(response) : null
 }
