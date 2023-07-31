@@ -19,7 +19,7 @@ export const load = (async ({ fetch, url }) => {
   }
 
   var response = await Api.publicFetch(fetch, PUBLIC_API_URL, {
-    route: `/v1/auth/confirm?token=${token}&user=${user}`,
+    route: `/v1/auth/confirm?token=${encodeURIComponent(token)}&user=${user}`,
     method: "GET"
   })
   if (!response) {
