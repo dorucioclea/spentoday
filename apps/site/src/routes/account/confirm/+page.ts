@@ -14,7 +14,7 @@ export const load = (async ({ fetch, url }) => {
   const user = url.searchParams.get("user")
   if (user == null) {
     return {
-      message: "Електронна адресса відсутня, перевірте правильність посилання."
+      message: "Електронна адреса відсутня, перевірте правильність посилання."
     }
   }
 

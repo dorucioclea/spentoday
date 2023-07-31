@@ -90,7 +90,7 @@
   </a>
 
   <a
-    href="/forgot"
+    href="/account/forgot"
     class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
       mt-8 block text-center"
   >

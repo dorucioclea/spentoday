@@ -3,5 +3,4 @@
     <p class="text-center text-gray-600 mt-6 max-w-3xl m-auto">
         You have successfully verified your email
     </p>
-    
 </main>
