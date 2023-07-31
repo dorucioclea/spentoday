@@ -199,14 +199,6 @@ So we want to add some really basic webhook support. Maybe just one webhook for 
 It will be cool at least for experience, but it also can be very useful.
 For example you want to send some additional email when user buy some specific product.
 
-## AI (maybe)
-
-Maybe to be in step with modernity we can use AI. Some examples:
-
-- search where you just describe what you want and AI gives you exact filters, sorting and text search
-- creation of description and properties for products, AI really simplify the process and save time
-- generation of shop branding
-
 ## Analytics
 
 Analytics should be anabled for platform itself and for each store. Business wants to see numbers and we also.
