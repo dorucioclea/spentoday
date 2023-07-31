@@ -1,5 +1,5 @@
 import type { Fetch } from "./base"
-import { BAD_REQUEST, CONFLICT, NOT_FOUND, callPublic, publicFetch } from "./base"
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, publicFetch } from "./base"
 
 /*
 
