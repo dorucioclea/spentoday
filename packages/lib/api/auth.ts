@@ -114,27 +114,36 @@ export async function forgot(
   return ForgotStatus.Fail
 }
 
-export enum ConfirmStatus {
+
+export enum ResetStatus {
   Success,
+  EmailNotFound,
+  PasswordsMismatch,
   Fail
 }
 
-export async function confirm(
+export async function reset(
   fetch: Fetch,
   base: string,
+  email: string,
   token: string,
-  user: string
-): Promise<ConfirmStatus> {
-  var response = await publicFetch(fetch, base, {
-    route: `/v1/auth/confirm?token=${token}&user=${user}`,
-    method: "GET"
+  password: string,
+  confirmPassword: string
+): Promise<ResetStatus> {
+  const response = await publicFetch(fetch, base, {
+    route: "/v1/auth/reset",
+    method: "POST",
+    body: {
+      email: email,
+      token: token,
+      password: password,
+      confirmPassword : confirmPassword
+    }
   })
 
-  if (!response) return ConfirmStatus.Fail
-
-  if (response.ok) return ConfirmStatus.Success
-
-  // TODO: is expired
-
-  return ConfirmStatus.Fail
+  if (!response) return ResetStatus.Fail
+  if (response.status == NOT_FOUND) return ResetStatus.EmailNotFound
+  if (response.status == BAD_REQUEST) return ResetStatus.PasswordsMismatch
+  if (response.ok) return ResetStatus.Success
+  return ResetStatus.Fail
 }
