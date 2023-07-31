@@ -6,6 +6,7 @@ import { Api } from "lib"
 export type ShopCategory = {
   id: string
   name: string
+  parentId: string | null
 }
 
 export const load = (async ({ fetch, params }) => {
@@ -24,6 +25,7 @@ export const load = (async ({ fetch, params }) => {
   if (!data) throw error(Api.PROBLEM, { message: "Хмм, проблема!" })
 
   return {
-    categories: data
+    categories: data,
+    shopId: shopId
   }
 }) satisfies PageLoad
