@@ -91,7 +91,6 @@ export async function register(
   return RegisterStatus.Fail
 }
 
-
 export enum ForgotStatus {
   Success,
   Fail
@@ -129,11 +128,13 @@ export async function confirm(
   var response = await publicFetch(fetch, base, {
     route: `/v1/auth/confirm?token=${token}&user=${user}`,
     method: "GET"
-  });
+  })
 
-  if (!response) return ConfirmStatus.Fail;
+  if (!response) return ConfirmStatus.Fail
 
-  if (response.ok) return ConfirmStatus.Success;
+  if (response.ok) return ConfirmStatus.Success
 
-  return ConfirmStatus.Fail;
+  // TODO: is expired
+
+  return ConfirmStatus.Fail
 }
