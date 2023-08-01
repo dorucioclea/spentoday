@@ -12,6 +12,7 @@
     "format": "prettier --ignore-path=../../.prettierignore --write ."
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^2.2.1",
     "lib": "*",
     "ui": "*",
     "zod": "^3.21.4"

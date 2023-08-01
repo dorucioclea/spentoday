@@ -1,4 +1,7 @@
+import { Api } from "lib"
 import type { PageLoad } from "./$types"
+import { PUBLIC_API_URL } from "$env/static/public"
+import { error } from "@sveltejs/kit"
 
 /*
 
@@ -9,9 +12,14 @@ Need:
 */
 
 export const load = (async ({ fetch, params }) => {
-  const shopId = params.shopId
+  const products = await Api.shopProducts(fetch, PUBLIC_API_URL, {
+    shopId: params.shopId,
+    start: 0,
+    count: 10
+  })
+  if (!products) throw error(500, { message: "AAAA" })
 
   return {
-    shopId
+    products: products
   }
 }) satisfies PageLoad

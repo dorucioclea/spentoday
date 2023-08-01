@@ -1,9 +1,8 @@
 <script lang="ts">
-
-import { goto } from "$app/navigation"
+  import { goto } from "$app/navigation"
   import { PUBLIC_API_URL } from "$env/static/public"
+  import { routes } from "$lib"
   import { Api } from "lib"
-  import { ForgotStatus, LoginStatus } from "lib/api"
   import { z } from "zod"
 
   const emailSchema = z.string().email()
@@ -15,12 +14,11 @@ import { goto } from "$app/navigation"
   async function forgot() {
     const status = await Api.forgot(fetch, PUBLIC_API_URL, email)
 
-    if (status == ForgotStatus.Success) {
+    if (status == Api.ForgotStatus.Success) {
       goto("/dashboard")
       return
     }
   }
-
 </script>
 
 <svelte:head>
@@ -34,7 +32,7 @@ import { goto } from "$app/navigation"
     Send you a link for password reset
   </p>
 
-<form
+  <form
     on:submit|preventDefault={forgot}
     class="max-w-lg m-auto flex flex-col gap-4 mt-12"
   >
@@ -55,4 +53,11 @@ import { goto } from "$app/navigation"
     </button>
   </form>
 
-  </main>
+  <a
+    href={routes.login}
+    class="underline decoration-primary-100 hover:decoration-primary-300 decoration-2
+    mt-8 block text-center"
+  >
+    Already have an account? Login.
+  </a>
+</main>

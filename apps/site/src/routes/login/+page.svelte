@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import { PUBLIC_API_URL } from "$env/static/public"
+  import { routes } from "$lib"
   import { Api } from "lib"
   import { LoginStatus } from "lib/api"
   import { z } from "zod"
@@ -82,7 +83,7 @@
   </form>
 
   <a
-    href="/register"
+    href={routes.register}
     class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
       mt-8 block text-center"
   >
@@ -90,7 +91,7 @@
   </a>
 
   <a
-    href="/account/forgot"
+    href={routes.accountForgot}
     class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
       mt-8 block text-center"
   >

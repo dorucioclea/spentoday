@@ -11,7 +11,7 @@
 
   async function addDomain() {
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/domains/${data.shopId}`,
+      route: `/v1/site/domains/${data.shopId}`,
       method: "POST",
       body: { domain: domainInput }
     })
@@ -54,7 +54,7 @@
 
   async function removeDomain(domain: string) {
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/domains/${data.shopId}/${domain}`,
+      route: `/v1/site/domains/${data.shopId}/${domain}`,
       method: "DELETE"
     })
     if (!response) return alert("Can't remove now")
@@ -71,7 +71,7 @@
 
   async function verifyDomain(domain: string) {
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/domains/${domain}/verify`,
+      route: `/v1/site/domains/${domain}/verify`,
       method: "PATCH"
     })
     if (!response) return alert("something wrong")

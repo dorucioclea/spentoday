@@ -3,6 +3,7 @@
   import { z } from "zod"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
+  import { routes } from "$lib"
 
   const emailSchema = z.string().email()
 
@@ -114,7 +115,7 @@
   </form>
 
   <a
-    href="/login"
+    href={routes.login}
     class="underline decoration-primary-100 hover:decoration-primary-300 decoration-2
     mt-8 block text-center"
   >
