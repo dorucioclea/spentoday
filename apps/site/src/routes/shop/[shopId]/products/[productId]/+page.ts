@@ -3,7 +3,7 @@ import type { PageLoad } from "./$types"
 import { PUBLIC_API_URL } from "$env/static/public"
 import { error } from "@sveltejs/kit"
 
-type GetProductOutput = {
+export type GetProductOutput = {
   id: string
   name: string
   price: number

@@ -74,3 +74,29 @@ export async function shopProducts(
   const json = await responseJson<Product[]>(response)
   return json
 }
+
+//
+
+export type UpdateProductInput = {
+  id: string
+  name?: string
+  price?: number
+  amount?: number
+  isDraft?: boolean
+  seoTitle?: string
+  seoDescription?: string
+  seoSlug?: string
+}
+
+export async function updateProduct(
+  fetch: Fetch,
+  base: string,
+  input: UpdateProductInput
+) {
+  const response = await secureFetch(fetch, base, {
+    route: `/v1/site/products`,
+    method: "PATCH",
+    body: input
+  })
+  return response != null && response.ok
+}
