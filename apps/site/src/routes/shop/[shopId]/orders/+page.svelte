@@ -3,13 +3,13 @@
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
 
-  let data: PageData
+  export let data: PageData
 
   let customerEmail: string = ""
   let productName: string = ""
   let timer: number
 
-  $: orders = data.orders
+  $: orders = data.orders ?? []
 
   function debounceSearch() {
     clearTimeout(timer)
@@ -27,6 +27,7 @@
   }
 </script>
 
+``
 <main>
   <form>
     <input

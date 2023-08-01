@@ -12,6 +12,6 @@ export const load = (async ({ fetch, params }) => {
 
   return {
     shopId: params.shopId,
-    orders
+    orders: orders
   }
 }) satisfies PageLoad

@@ -1,5 +1,7 @@
 // place files you want to import through the `$lib` alias in this folder.
 
+export * as routes from "./routes"
+
 export function debounce(timer: number, action: Function) {
   return () => {
     clearTimeout(timer)

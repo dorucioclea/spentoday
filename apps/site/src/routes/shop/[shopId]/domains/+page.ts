@@ -21,7 +21,7 @@ export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
 
   const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-    route: `/v1/domains/${shopId}`,
+    route: `/v1/site/domains/${shopId}`,
     method: "GET"
   })
   if (response == null) return { domains: [] }

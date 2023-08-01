@@ -13,7 +13,7 @@ export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
 
   const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-    route: `/v1/categories/${shopId}`,
+    route: `/v1/site/categories/${shopId}`,
     method: "GET"
   })
   if (!response) throw error(Api.PROBLEM, { message: "Сталася помилка, вибачайте!" })

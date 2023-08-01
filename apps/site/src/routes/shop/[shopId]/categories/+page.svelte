@@ -26,7 +26,7 @@
     }
 
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: "/v1/categories",
+      route: "/v1/site/categories",
       method: "POST",
       body: {
         name: name,
@@ -67,7 +67,7 @@
     if (parentInput != category.parentId) body.parentId = parentInput
 
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: "/v1/categories",
+      route: "/v1/site/categories",
       method: "PATCH",
       body: body
     })
@@ -103,7 +103,7 @@
 
   async function remove(id: string) {
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/categories/${id}`,
+      route: `/v1/site/categories/${id}`,
       method: "DELETE"
     })
     if (!response) {
