@@ -3,7 +3,7 @@ import type { PageLoad } from "./$types"
 import { PUBLIC_API_URL } from "$env/static/public"
 import { error } from "@sveltejs/kit"
 
-export type ProductImageOutput = {
+export type ImageOutput = {
   id: string
   key: string
   bucket: string
@@ -19,7 +19,7 @@ export type GetProductOutput = {
   seoTitle: string
   seoDescription: string
   seoSlug: string
-  images: ProductImageOutput[]
+  images: ImageOutput[]
 }
 
 export const load = (async ({ fetch, params }) => {

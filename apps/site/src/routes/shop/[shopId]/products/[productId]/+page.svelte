@@ -3,7 +3,7 @@
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
-  import { imageUrl } from "lib/api"
+  import type { ImageOutput } from "./+page"
 
   export let data: PageData
   $: images = data.product.images
@@ -14,7 +14,6 @@
   let seoTitle: string = data.product.seoTitle
   let seoDescription: string = data.product.seoDescription
   let seoSlug: string = data.product.seoSlug
-  let files: FileList
 
   let status: string = "Збережено"
   let timer: number = 0
@@ -37,6 +36,8 @@
     if (data.product.price != price) input.price = price
     if (data.product.amount != amount) input.amount = amount
 
+    if (Object.keys(input).length <= 1) return
+
     status = "Зберігається..."
     const updated = await Api.updateProduct(fetch, PUBLIC_API_URL, input)
     if (!updated) {
@@ -53,9 +54,13 @@
     if (input.amount) data.product.amount = input.amount
   }
 
-  async function uploadImage() {
-    const file = files.item(0)
-    if (!file) return
+  async function uploadImage(
+    event: Event & {
+      currentTarget: EventTarget & HTMLInputElement
+    }
+  ) {
+    const file = event.currentTarget.files?.item(0)
+    if (!file) return alert("Can't upload")
 
     const formData = new FormData()
     formData.append("file", file)
@@ -65,6 +70,12 @@
       body: formData
     })
     if (!response || !response.ok) return alert("problem")
+
+    const json = await Api.responseJson<ImageOutput>(response)
+    if (!json) return alert("something wrong")
+
+    images.push(json)
+    images = images
   }
 
   async function deleteImage(imageId: string) {
@@ -95,9 +106,42 @@
         </button>
       </div>
     {/each}
+
+    {#if images.length < 12}
+      <label
+        for="dropzone-file"
+        class="flex items-center justify-center bg-gray-100 hover:bg-gray-50
+        border border-gray-300 border-dashed rounded cursor-pointer"
+      >
+        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+          <svg
+            class="w-8 h-8 mb-4 text-gray-500"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            />
+          </svg>
+          <p class="mb-2 text-sm text-gray-500 font-semibold">Click to upload image</p>
+        </div>
+        <input
+          on:change={uploadImage}
+          id="dropzone-file"
+          accept="image/*"
+          type="file"
+          class="hidden"
+        />
+      </label>
+    {/if}
   </div>
 
-  <input type="file" bind:files />
   <!-- <button on:click={uploadImage}>Upload file</button> -->
 
   <input
