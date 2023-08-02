@@ -93,6 +93,7 @@ export async function register(
 
 export enum ForgotStatus {
   Success,
+  EmailNotFound,
   Fail
 }
 
@@ -110,6 +111,7 @@ export async function forgot(
   })
 
   if (!response) return ForgotStatus.Fail
+  if (response.status === NOT_FOUND) return ForgotStatus.EmailNotFound
   if (response.ok) return ForgotStatus.Success
   return ForgotStatus.Fail
 }
@@ -137,7 +139,7 @@ export async function reset(
       email: email,
       token: token,
       password: password,
-      confirmPassword : confirmPassword
+      confirmPassword: confirmPassword
     }
   })
 

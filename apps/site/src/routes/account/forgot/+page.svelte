@@ -1,20 +1,30 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import { PUBLIC_API_URL } from "$env/static/public"
-  import { routes } from "$lib"
   import { Api } from "lib"
+  import { ForgotStatus, LoginStatus } from "lib/api"
   import { z } from "zod"
 
   const emailSchema = z.string().email()
 
   let email: string = ""
 
+  let message: string | null = null
+
   $: isEmailCorrect = emailSchema.safeParse(email).success
 
   async function forgot() {
     const status = await Api.forgot(fetch, PUBLIC_API_URL, email)
 
-    if (status == Api.ForgotStatus.Success) {
+    if (status == ForgotStatus.Fail) {
+      message = "Сервер не працює."
+    }
+
+    if (status == ForgotStatus.EmailNotFound) {
+      message = "Такої адреси не існує"
+    }
+
+    if (status == ForgotStatus.Success) {
       goto("/dashboard")
       return
     }
@@ -36,6 +46,11 @@
     on:submit|preventDefault={forgot}
     class="max-w-lg m-auto flex flex-col gap-4 mt-12"
   >
+    {#if message}
+      <div class="px-5 py-3 border border-red-200 bg-red-100 rounded-md text-red-800">
+        {message}
+      </div>
+    {/if}
     <input
       class="bg-gray-100 focus:bg-gray-50 px-6 py-4 rounded-md border border-gray-200"
       bind:value={email}
@@ -52,12 +67,4 @@
       Send
     </button>
   </form>
-
-  <a
-    href={routes.login}
-    class="underline decoration-primary-100 hover:decoration-primary-300 decoration-2
-    mt-8 block text-center"
-  >
-    Already have an account? Login.
-  </a>
 </main>
