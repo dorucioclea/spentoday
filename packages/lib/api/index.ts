@@ -3,7 +3,7 @@ export * from "./auth"
 export * from "./dashboard"
 
 export type Image = {
-  provider: "storj" | "github"
+  provider: string // "storj" | "github"
   bucket: string
   key: string
 }
@@ -14,8 +14,11 @@ export function imageUrl(image: Image): string | null {
     return `https://link.storjshare.io/raw/${storjShopsPublicKey}/${image.bucket}/${image.key}`
   }
 
-  // image.provider == "github"
-  return `https://raw.githubusercontent.com/flurium/${image.bucket}/main/${image.key}`
+  if (image.provider == "github") {
+    return `https://raw.githubusercontent.com/flurium/${image.bucket}/main/${image.key}`
+  }
+
+  return null
 }
 
 // async function upload() {

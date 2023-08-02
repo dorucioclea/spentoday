@@ -19,7 +19,7 @@
   <nav class="flex gap-2">
     {#each links as link}
       <a
-        class="py-2 px-4 rounded {$page.url.pathname == link.href
+        class="py-2 px-4 rounded {$page.url.pathname.startsWith(link.href)
           ? 'bg-primary-500 text-white'
           : 'hover:bg-gray-100'}"
         href={link.href}

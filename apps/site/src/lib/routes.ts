@@ -4,6 +4,8 @@ export const accountForgot = "/account/forgot"
 export const accountConfirm = "/account/confirm"
 export const accountConfirmSuccess = "/account/confirm-success"
 
+export const dashboard = "/dashboard"
+
 export const shop = (shopId: string) => `/shop/${shopId}`
 export const shopCategories = (shopId: string) => `/shop/${shopId}/categories`
 export const shopDomains = (shopId: string) => `/shop/${shopId}/domains`
