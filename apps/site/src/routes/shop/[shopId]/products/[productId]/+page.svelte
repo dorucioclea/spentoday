@@ -75,7 +75,6 @@
       images = images
       return
     }
-
     // TODO: errors?
     return alert("something wrong")
   }
