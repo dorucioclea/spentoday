@@ -14,20 +14,17 @@ type CallInfo = {
 /** Send request to secure route of api */
 export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
   try {
-    let headers = new Headers({
+    const headers = new Headers({
       accept: "application/json",
       "double-submit": "ueqc1"
     })
 
-    let body = undefined
-    if (info.body) {
-      if (info.body instanceof FormData) {
-        headers.append("content-type", "multipart/form-data")
-        body = info.body
-      } else {
-        headers.append("content-type", "application/json")
-        body = JSON.stringify(info.body)
-      }
+    let body
+    if (info.body == undefined || info.body instanceof FormData) {
+      body = info.body
+    } else {
+      headers.append("content-type", "application/json")
+      body = JSON.stringify(info.body)
     }
 
     const response = await fetch(new URL(info.route, base), {
@@ -46,19 +43,16 @@ export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
 /** Send request to public route of api */
 export async function publicFetch(fetch: Fetch, base: string, info: CallInfo) {
   try {
-    let headers = new Headers({
+    const headers = new Headers({
       accept: "application/json"
     })
 
-    let body = undefined
-    if (info.body) {
-      if (info.body instanceof FormData) {
-        headers.append("content-type", "multipart/form-data")
-        body = info.body
-      } else {
-        headers.append("content-type", "application/json")
-        body = JSON.stringify(info.body)
-      }
+    let body
+    if (info.body == undefined || info.body instanceof FormData) {
+      body = info.body
+    } else {
+      headers.append("content-type", "application/json")
+      body = JSON.stringify(info.body)
     }
 
     const response = await fetch(new URL(info.route, base), {

@@ -15,7 +15,7 @@
   ]
 </script>
 
-<header class="p-4">
+<header class="p-6">
   <nav class="flex gap-2">
     {#each links as link}
       <a
@@ -30,4 +30,6 @@
   </nav>
 </header>
 
-<slot />
+<main class="px-6">
+  <slot />
+</main>

@@ -2,21 +2,28 @@
   import slugify from "@sindresorhus/slugify"
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
-  import { debounce } from "$lib"
   import { Api } from "lib"
 
   export let data: PageData
+  $: images = data.product.images
+  $: categories = data.categories
 
-  let name: string
-  let price: number
-  let amount: number
-  let seoTitle: string
-  let seoDescription: string
-  let seoSlug: string
+  let name: string = data.product.name
+  let price: number = data.product.price
+  let amount: number = data.product.amount
+  let description: string = data.product.description
+  let seoTitle: string = data.product.seoTitle
+  let seoDescription: string = data.product.seoDescription
+  let seoSlug: string = data.product.seoSlug
 
+  let status: string = "Збережено"
   let timer: number = 0
 
-  const debounceChange = debounce(timer, change)
+  function debounceChange() {
+    status = "Пишеться"
+    clearTimeout(timer)
+    timer = setTimeout(change, 700)
+  }
 
   async function change() {
     const input: Api.UpdateProductInput = { id: data.productId }
@@ -29,24 +36,154 @@
     if (data.product.name != name) input.name = name.slice()
     if (data.product.price != price) input.price = price
     if (data.product.amount != amount) input.amount = amount
+    if (data.product.description != description) input.description = description
 
+    if (Object.keys(input).length <= 1) {
+      status = "Збережене"
+      return
+    }
+
+    status = "Зберігається..."
     const updated = await Api.updateProduct(fetch, PUBLIC_API_URL, input)
-    if (!updated) return alert("Can't update")
+    if (!updated) {
+      status = "Не зберіглося"
+      return
+    }
 
+    status = "Збережене"
     if (input.seoSlug) data.product.seoSlug = input.seoSlug
     if (input.seoTitle) data.product.seoTitle = input.seoTitle
     if (input.seoDescription) data.product.seoDescription = input.seoDescription
     if (input.name) data.product.name
     if (input.price) data.product.price = input.price
     if (input.amount) data.product.amount = input.amount
+    if (input.description) data.product.description = input.description
+  }
+
+  async function uploadImage(
+    event: Event & { currentTarget: EventTarget & HTMLInputElement }
+  ) {
+    const file = event.currentTarget.files?.item(0)
+    if (!file) return alert("Can't upload")
+
+    const result = await Api.uploadProductImage(fetch, PUBLIC_API_URL, {
+      productId: data.productId,
+      file: file
+    })
+    if (result.data) {
+      images.push(result.data)
+      images = images
+      return
+    }
+    // TODO: errors?
+    return alert("something wrong")
+  }
+
+  async function deleteImage(imageId: string) {
+    const deleted = await Api.deleteProductImage(fetch, PUBLIC_API_URL, imageId)
+    if (!deleted) return alert("Не можемо видалити зображення!")
+    images = images.filter((x) => x.id != imageId)
   }
 </script>
 
-<h1>{data.product.name}</h1>
+<h1 class="text-3xl text-center my-10 font-semibold">Редактувати продукт</h1>
 
-<div class="flex flex-col gap-4">
-  <h3 class="mb-4 text-2xl">SEO - search engine optimizations</h3>
+<div class="py-3 sticky top-0 max-w-3xl m-auto bg-white border-b border-gray-100">
+  {status}
+</div>
+
+<section class="flex flex-col gap-4 max-w-3xl m-auto">
+  <div>
+    {#each categories as category}
+      {#if category.assigned}
+        <span class="px-3 py-2 bg-green-200">{category.name}</span>
+      {:else}
+        <span class="px-3 py-2 bg-secondary-100">{category.name}</span>
+      {/if}
+    {/each}
+  </div>
+
+  <div class="grid grid-cols-4 gap-2 my-4">
+    {#each images as image (image.id)}
+      <div>
+        <img class="p-2 rounded-t bg-gray-50" src={Api.imageUrl(image)} alt="Product" />
+        <button
+          on:click={() => deleteImage(image.id)}
+          class="w-full rounded-b p-2 bg-red-100 hover:bg-red-200 text-red-800"
+        >
+          Delete
+        </button>
+      </div>
+    {/each}
+
+    {#if images.length < 12}
+      <label
+        for="dropzone-file"
+        class="flex items-center justify-center bg-gray-100 hover:bg-gray-50
+        border border-gray-300 border-dashed rounded cursor-pointer"
+      >
+        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+          <svg
+            class="w-8 h-8 mb-4 text-gray-500"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            />
+          </svg>
+          <p class="mb-2 text-sm text-gray-500 font-semibold">Click to upload image</p>
+        </div>
+        <input
+          on:change={uploadImage}
+          id="dropzone-file"
+          accept="image/*"
+          type="file"
+          class="hidden"
+        />
+      </label>
+    {/if}
+  </div>
+
+  <!-- <button on:click={uploadImage}>Upload file</button> -->
+
   <input
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={name}
+    on:keyup={debounceChange}
+    placeholder="Name"
+  />
+  <textarea
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={description}
+    on:keyup={debounceChange}
+    placeholder="Опис"
+    rows="10"
+  />
+  <input
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={price}
+    on:keyup={debounceChange}
+    type="number"
+    placeholder="Price"
+  />
+  <input
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={amount}
+    on:keyup={debounceChange}
+    type="number"
+    placeholder="Amount"
+  />
+
+  <h3 class="mt-4 text-2xl">SEO - search engine optimizations</h3>
+  <input
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={seoSlug}
     on:keyup={debounceChange}
     on:input={() => {
@@ -57,6 +194,17 @@
     }}
     placeholder="Slug, приклад: product-name"
   />
-  <input bind:value={seoTitle} placeholder="Назва" />
-  <input bind:value={seoDescription} placeholder="Опис" />
-</div>
+  <input
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={seoTitle}
+    on:keyup={debounceChange}
+    placeholder="Назва"
+  />
+  <textarea
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={seoDescription}
+    on:keyup={debounceChange}
+    placeholder="Опис"
+    rows="10"
+  />
+</section>

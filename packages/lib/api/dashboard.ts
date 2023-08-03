@@ -82,6 +82,7 @@ export type UpdateProductInput = {
   name?: string
   price?: number
   amount?: number
+  description?: string
   isDraft?: boolean
   seoTitle?: string
   seoDescription?: string

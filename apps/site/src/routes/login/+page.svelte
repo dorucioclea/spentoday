@@ -18,7 +18,7 @@
     const loginStatus = await Api.login(fetch, PUBLIC_API_URL, email, password)
 
     if (loginStatus == LoginStatus.Success) {
-      goto("/dashboard")
+      goto(routes.dashboard)
       return
     }
 

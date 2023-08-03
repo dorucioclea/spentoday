@@ -10,7 +10,6 @@
   let newProduct: string = ""
 
   async function add() {
-    console.log("stct")
     const name = newProduct.trim()
     if (name == "") {
       alert("Name can't be empty")
@@ -36,25 +35,42 @@
   }
 </script>
 
-<form on:submit|preventDefault={add} class="max-w-xl m-auto flex flex-col gap-6">
-  <h1>Add</h1>
-
+<form on:submit|preventDefault={add} class="flex gap-2">
   <input
-    class="bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-l-full
+     border border-gray-200"
     bind:value={newProduct}
     placeholder="New product name: Coat of Goat"
   />
 
-  <button type="submit">Add</button>
+  <button class=" bg-primary-500 text-white px-6 rounded-r-full" type="submit">
+    Add
+  </button>
 </form>
 
-{#each data.products as product}
-  <div>
-    <span>
-      {product.name}
-    </span>
-    {product.isDraft}
+<div class="flex flex-col my-10">
+  {#each data.products as product, i (product.id)}
+    <a
+      class="flex justify-between items-center hover:bg-secondary-50 p-4 border-b border-secondary-200"
+      href={routes.shopProduct(data.shopId, product.id)}
+    >
+      <span>
+        {product.name}
+      </span>
 
-    <a class="decoration" href={routes.shopProduct(data.shopId, product.id)}>Edit</a>
-  </div>
-{/each}
+      {#if product.isDraft}
+        <span
+          class="bg-secondary-100 border border-secondary-400 text-secondary-800
+          text-sm rounded-full py-1 px-2">Чернетка</span
+        >
+      {:else}
+        <span
+          class="bg-green-100 border border-green-400 text-green-800
+          text-sm rounded-full py-1 px-2"
+        >
+          Активний
+        </span>
+      {/if}
+    </a>
+  {/each}
+</div>
