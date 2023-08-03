@@ -4,6 +4,7 @@
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import { routes } from "$lib"
+    import { RegisterStatus } from "lib/api"
 
   const emailSchema = z.string().email()
 
@@ -26,6 +27,7 @@
       return
     }
 
+    
     const status = await Api.register(fetch, PUBLIC_API_URL, {
       name,
       email,
@@ -33,17 +35,17 @@
       confirmPassword
     })
 
-    if (status == Api.RegisterStatus.Success) {
+    if (status.status == Api.RegisterStatus.Success) {
       goto("/dashboard")
       return
     }
 
-    if (status == Api.RegisterStatus.EmailIsTaken) {
-      message = "User with such email already exists."
+    if (status.status == RegisterStatus.EmailIsTaken) {
+      message = `Адреса ${email} вже зайнята`
       return
     }
 
-    if (status == Api.RegisterStatus.PasswordsMismatch) {
+    if (status.status == Api.RegisterStatus.PasswordsMismatch) {
       message = "Password mismatches confirm password."
       return
     }

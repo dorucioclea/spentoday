@@ -1,5 +1,6 @@
 import type { Fetch } from "./base"
-import { BAD_REQUEST, CONFLICT, NOT_FOUND, publicFetch } from "./base"
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, PROBLEM, publicFetch } from "./base"
+import { Api } from "lib"
 
 /*
 
@@ -63,6 +64,10 @@ export enum RegisterStatus {
   Fail
 }
 
+export type RegisterResult = 
+  | { data: Response, status: RegisterStatus.EmailIsTaken} 
+  | {data?:undefined, status: RegisterStatus.Fail | RegisterStatus.Success | RegisterStatus.PasswordsMismatch }
+
 export async function register(
   fetch: Fetch,
   base: string,
@@ -72,7 +77,7 @@ export async function register(
     password: string
     confirmPassword: string
   }
-): Promise<RegisterStatus> {
+): Promise<RegisterResult> {
   const response = await publicFetch(fetch, base, {
     route: "/v1/auth/register",
     method: "POST",
@@ -84,11 +89,15 @@ export async function register(
     }
   })
 
-  if (!response) return RegisterStatus.Fail
-  if (response.ok) return RegisterStatus.Success
-  if (response.status == CONFLICT) return RegisterStatus.EmailIsTaken
-  if (response.status == BAD_REQUEST) return RegisterStatus.PasswordsMismatch
-  return RegisterStatus.Fail
+  if (!response) return { status: RegisterStatus.Fail }
+  if (response.ok) return { status: RegisterStatus.Success }
+  console.log(response.status)
+  if (response.status == PROBLEM) {
+    const jsonData = await response.json();
+    return { data: jsonData, status: RegisterStatus.EmailIsTaken };
+  }
+  if (response.status == BAD_REQUEST) return { status: RegisterStatus.PasswordsMismatch }
+  return { status: RegisterStatus.Fail }
 }
 
 export enum ForgotStatus {
