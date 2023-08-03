@@ -22,7 +22,7 @@ export const load = (async ({ fetch, url }) => {
   
   const response = await Api.secureFetch(fetch,PUBLIC_API_URL, 
     {
-      route:"/v1/dashboard/shops",
+      route:"/v1/site/dashboard/shops",
       method: "GET"
     })
 

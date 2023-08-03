@@ -57,7 +57,6 @@ export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
     let body = undefined
     if (info.body) {
       if (info.body instanceof FormData) {
-        headers.append("content-type", "multipart/form-data")
         body = info.body
       } else {
         headers.append("content-type", "application/json")
@@ -88,7 +87,6 @@ export async function publicFetch(fetch: Fetch, base: string, info: CallInfo) {
     let body = undefined
     if (info.body) {
       if (info.body instanceof FormData) {
-        headers.append("content-type", "multipart/form-data")
         body = info.body
       } else {
         headers.append("content-type", "application/json")
