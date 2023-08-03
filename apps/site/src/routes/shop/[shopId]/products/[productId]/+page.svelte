@@ -3,14 +3,15 @@
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
-  import type { ImageOutput } from "./+page"
 
   export let data: PageData
   $: images = data.product.images
+  $: categories = data.categories
 
   let name: string = data.product.name
   let price: number = data.product.price
   let amount: number = data.product.amount
+  let description: string = data.product.description
   let seoTitle: string = data.product.seoTitle
   let seoDescription: string = data.product.seoDescription
   let seoSlug: string = data.product.seoSlug
@@ -35,8 +36,12 @@
     if (data.product.name != name) input.name = name.slice()
     if (data.product.price != price) input.price = price
     if (data.product.amount != amount) input.amount = amount
+    if (data.product.description != description) input.description = description
 
-    if (Object.keys(input).length <= 1) return
+    if (Object.keys(input).length <= 1) {
+      status = "Збережене"
+      return
+    }
 
     status = "Зберігається..."
     const updated = await Api.updateProduct(fetch, PUBLIC_API_URL, input)
@@ -52,47 +57,52 @@
     if (input.name) data.product.name
     if (input.price) data.product.price = input.price
     if (input.amount) data.product.amount = input.amount
+    if (input.description) data.product.description = input.description
   }
 
   async function uploadImage(
-    event: Event & {
-      currentTarget: EventTarget & HTMLInputElement
-    }
+    event: Event & { currentTarget: EventTarget & HTMLInputElement }
   ) {
     const file = event.currentTarget.files?.item(0)
     if (!file) return alert("Can't upload")
 
-    const formData = new FormData()
-    formData.append("file", file)
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/site/products/${data.productId}/image`,
-      method: "POST",
-      body: formData
+    const result = await Api.uploadProductImage(fetch, PUBLIC_API_URL, {
+      productId: data.productId,
+      file: file
     })
-    if (!response || !response.ok) return alert("problem")
+    if (result.data) {
+      images.push(result.data)
+      images = images
+      return
+    }
 
-    const json = await Api.responseJson<ImageOutput>(response)
-    if (!json) return alert("something wrong")
-
-    images.push(json)
-    images = images
+    // TODO: errors?
+    return alert("something wrong")
   }
 
   async function deleteImage(imageId: string) {
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/site/products/image/${imageId}`,
-      method: "DELETE"
-    })
-    if (!response || !response.ok) return alert("problem")
-
+    const deleted = await Api.deleteProductImage(fetch, PUBLIC_API_URL, imageId)
+    if (!deleted) return alert("Не можемо видалити зображення!")
     images = images.filter((x) => x.id != imageId)
   }
 </script>
 
 <h1 class="text-3xl text-center my-10 font-semibold">Редактувати продукт</h1>
 
+<div class="py-3 sticky top-0 max-w-3xl m-auto bg-white border-b border-gray-100">
+  {status}
+</div>
+
 <section class="flex flex-col gap-4 max-w-3xl m-auto">
-  <span class="py-2 border-b border-gray-100">{status}</span>
+  <div>
+    {#each categories as category}
+      {#if category.assigned}
+        <span class="px-3 py-2 bg-green-200">{category.name}</span>
+      {:else}
+        <span class="px-3 py-2 bg-secondary-100">{category.name}</span>
+      {/if}
+    {/each}
+  </div>
 
   <div class="grid grid-cols-4 gap-2 my-4">
     {#each images as image (image.id)}
@@ -149,6 +159,13 @@
     bind:value={name}
     on:keyup={debounceChange}
     placeholder="Name"
+  />
+  <textarea
+    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    bind:value={description}
+    on:keyup={debounceChange}
+    placeholder="Опис"
+    rows="10"
   />
   <input
     class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"

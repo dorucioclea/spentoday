@@ -15,11 +15,11 @@
   ]
 </script>
 
-<header class="p-4">
+<header class="p-6">
   <nav class="flex gap-2">
     {#each links as link}
       <a
-        class="py-2 px-4 rounded {$page.url.pathname.startsWith(link.href)
+        class="py-2 px-4 rounded {$page.url.pathname == link.href
           ? 'bg-primary-500 text-white'
           : 'hover:bg-gray-100'}"
         href={link.href}
@@ -30,4 +30,6 @@
   </nav>
 </header>
 
-<slot />
+<main class="px-6">
+  <slot />
+</main>
