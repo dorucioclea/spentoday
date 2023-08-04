@@ -3,6 +3,7 @@
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
+  import { imageSize } from "$lib"
 
   export let data: PageData
   $: images = data.product.images
@@ -66,17 +67,20 @@
     const file = event.currentTarget.files?.item(0)
     if (!file) return alert("Can't upload")
 
+    const { width, height } = await imageSize(file)
+    if (width != height) return alert("Only 1:1 images are supported")
+
     const result = await Api.uploadProductImage(fetch, PUBLIC_API_URL, {
       productId: data.productId,
       file: file
     })
-    if (result.data) {
-      images.push(result.data)
-      images = images
-      return
+    if (result.status) {
+      return alert("aaaa")
     }
-    // TODO: errors?
-    return alert("something wrong")
+
+    images.unshift(result.data)
+    images = images
+    return
   }
 
   async function deleteImage(imageId: string) {

@@ -35,20 +35,20 @@
   }
 </script>
 
-<form on:submit|preventDefault={add} class="flex gap-2">
+<form on:submit|preventDefault={add} class="flex gap-2 mt-8">
   <input
     class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-l-full
      border border-gray-200"
     bind:value={newProduct}
-    placeholder="New product name: Coat of Goat"
+    placeholder="Щоб додати новий продукт, введіть його назву"
   />
 
-  <button class=" bg-primary-500 text-white px-6 rounded-r-full" type="submit">
+  <button class="bg-primary-500 text-white px-6 rounded-r-full" type="submit">
     Add
   </button>
 </form>
 
-<div class="flex flex-col my-10">
+<div class="flex flex-col mt-8">
   {#each data.products as product, i (product.id)}
     <a
       class="flex justify-between items-center hover:bg-secondary-50 p-4 border-b border-secondary-200"

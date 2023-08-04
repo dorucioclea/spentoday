@@ -11,19 +11,12 @@ Possible login situation:
 
 */
 
-export enum LoginStatus {
-  Success,
-  EmailNotFound,
-  IncorrectPassword,
-  Fail
-}
-
 export async function login(
   fetch: Fetch,
   base: string,
   email: string,
   password: string
-): Promise<LoginStatus> {
+): Promise<"ok" | "fail" | "email-not-found" | "bad-password"> {
   var response = await publicFetch(fetch, base, {
     route: "/v1/auth/login",
     method: "POST",
@@ -33,17 +26,11 @@ export async function login(
     }
   })
 
-  if (!response) return LoginStatus.Fail
-
-  if (response.ok) return LoginStatus.Success
-
-  // bad request: incorrect password
-  if (response.status === BAD_REQUEST) return LoginStatus.IncorrectPassword
-
-  // not found: user wiht this email not found
-  if (response.status === NOT_FOUND) return LoginStatus.EmailNotFound
-
-  return LoginStatus.Fail
+  if (!response) return "fail"
+  if (response.ok) return "ok"
+  if (response.status === BAD_REQUEST) return "bad-password"
+  if (response.status === NOT_FOUND) return "email-not-found"
+  return "fail"
 }
 
 /*
@@ -115,7 +102,6 @@ export async function forgot(
   if (response.ok) return ForgotStatus.Success
   return ForgotStatus.Fail
 }
-
 
 export enum ResetStatus {
   Success,

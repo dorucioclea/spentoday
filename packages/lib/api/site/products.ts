@@ -48,24 +48,6 @@ export async function oneProduct(fetch: Fetch, base: string, productId: string) 
 
 //
 // UPLOAD PRODUCT IMAGE
-
-enum UploadProductImageStatus {
-  NotImage,
-  NotFound,
-  CountLimitReached,
-  Problem
-}
-
-type UploadProductImageResult =
-  | {
-      data: ImageOutput
-      status?: undefined
-    }
-  | {
-      data?: undefined
-      status: UploadProductImageStatus
-    }
-
 export async function uploadProductImage(
   fetch: Fetch,
   base: string,
@@ -73,7 +55,15 @@ export async function uploadProductImage(
     productId: string
     file: File
   }
-): Promise<UploadProductImageResult> {
+): Promise<
+  | {
+      data: ImageOutput
+      status?: undefined
+    }
+  | {
+      status: "not-image" | "not-found" | "count-limit-reached" | "problem"
+    }
+> {
   const formData = new FormData()
   formData.append("file", input.file)
 
@@ -82,19 +72,16 @@ export async function uploadProductImage(
     method: "POST",
     body: formData
   })
-  if (!response) return { status: UploadProductImageStatus.Problem }
+  if (!response) return { status: "problem" }
   if (response.ok) {
     const json = await responseJson<ImageOutput>(response)
-    if (!json) return { status: UploadProductImageStatus.Problem }
+    if (!json) return { status: "problem" }
     return { data: json }
   }
-
-  if (response.status == BAD_REQUEST) return { status: UploadProductImageStatus.NotImage }
-  if (response.status == NOT_FOUND) return { status: UploadProductImageStatus.NotFound }
-  if (response.status == CONFLICT) {
-    return { status: UploadProductImageStatus.CountLimitReached }
-  }
-  return { status: UploadProductImageStatus.Problem }
+  if (response.status == CONFLICT) return { status: "count-limit-reached" }
+  if (response.status == BAD_REQUEST) return { status: "not-image" }
+  if (response.status == NOT_FOUND) return { status: "not-found" }
+  return { status: "problem" }
 }
 
 //
