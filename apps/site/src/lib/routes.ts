@@ -4,13 +4,13 @@ export const accountForgot = "/account/forgot"
 export const accountConfirm = "/account/confirm"
 export const accountConfirmSuccess = "/account/confirm-success"
 
-export const dashboard = "/dashboard"
+export const dashboard = "/shops"
 
-export const shop = (shopId: string) => `/shop/${shopId}`
-export const shopCategories = (shopId: string) => `/shop/${shopId}/categories`
-export const shopDomains = (shopId: string) => `/shop/${shopId}/domains`
-export const shopOrders = (shopId: string) => `/shop/${shopId}/orders`
-export const shopPages = (shopId: string) => `/shop/${shopId}/pages`
-export const shopSettings = (shopId: string) => `/shop/${shopId}/settings`
+export const shop = (shopId: string) => `/shops/${shopId}`
+export const shopCategories = (shopId: string) => `/shops/${shopId}/categories`
+export const shopDomains = (shopId: string) => `/shops/${shopId}/domains`
+export const shopOrders = (shopId: string) => `/shops/${shopId}/orders`
+export const shopPages = (shopId: string) => `/shops/${shopId}/pages`
+export const shopSettings = (shopId: string) => `/shops/${shopId}/settings`
 export const shopProduct = (shopId: string, productId: string) =>
-  `/shop/${shopId}/products/${productId}`
+  `/shops/${shopId}/products/${productId}`

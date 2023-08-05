@@ -1,14 +1,13 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import { z } from "zod"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import type { PageData } from "./$types"
 
   export let data: PageData
 
-  let password: string = ""
-  let confirmPassword: string = ""
+  let password = ""
+  let confirmPassword = ""
 
   let message: string | null = null
 

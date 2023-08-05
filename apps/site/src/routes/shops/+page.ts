@@ -9,14 +9,7 @@ export type DashboardShop = {
   id: string
 }
 
-/*
-
-- shops 
-- user info
-
-*/
-
-export const load = (async ({ fetch }) => {
+export const load = (async ({ fetch, url }) => {
   const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
     route: "/v1/site/dashboard/shops",
     method: "GET"

@@ -2,12 +2,12 @@
   import { goto } from "$app/navigation"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
-  import { ForgotStatus, LoginStatus } from "lib/api"
+  import { ForgotStatus } from "lib/api"
   import { z } from "zod"
 
   const emailSchema = z.string().email()
 
-  let email: string = ""
+  let email = ""
 
   let message: string | null = null
 

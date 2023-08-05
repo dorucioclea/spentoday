@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { PageData } from "./$types"
-  import type { DashboardShop } from "./+page"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
+  import type { DashboardShop } from "./+page"
   import { routes } from "$lib"
 
   export let data: PageData
