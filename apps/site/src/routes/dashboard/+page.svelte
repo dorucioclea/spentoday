@@ -62,7 +62,7 @@
   }
 
   async function toShop(shopId:string) {
-   goto(`/shop/${shopId}`)
+   goto(`/shop/${shopId}/settings`)
   }
 </script>
 

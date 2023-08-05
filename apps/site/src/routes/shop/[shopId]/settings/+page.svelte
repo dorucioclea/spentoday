@@ -1,15 +1,16 @@
 <script lang="ts">
-  import type { PageData } from "./$types"
+  import { Api } from "lib"
+  import type { PageLoad } from "./$types"
+  import { PUBLIC_API_URL } from "$env/static/public"
   import { goto } from "$app/navigation"
   import { error, redirect } from "@sveltejs/kit"
   import { z } from "zod"
-  import { PUBLIC_API_URL } from "$env/static/public"
-  import { Api } from "lib"
   import type { Link, Banner } from "./+page"
+  import type { PageData } from "./$types"
   export let data: PageData
   $: links = data.links ?? []
   $: banners = data.banners ?? []
-  $: shopName = data.name
+  $: shopName = data.name 
   $: logo = data.logo
   let name: string = ""
   let link: string = ""
@@ -142,12 +143,13 @@
     if (response.status == 403 || response.status == 401) goto("/login")
 
     if (!response.ok) goto("/")
-
-    if (response.ok) {
-      logo = await Api.responseJson<string>(response)
-
-      return
+     
+    let LogoIs= await Api.responseJson<string>(response)
+    if(LogoIs!= null){
+      logo = LogoIs
     }
+      return
+    
   }
 </script>
 
