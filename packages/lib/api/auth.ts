@@ -125,7 +125,6 @@ export async function forgot(
   return ForgotStatus.Fail
 }
 
-
 export enum ResetStatus {
   Success,
   EmailNotFound,
