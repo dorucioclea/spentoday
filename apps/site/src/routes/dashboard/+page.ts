@@ -16,7 +16,7 @@ export type DashboardShop = {
 
 */
 
-export const load = (async ({ fetch, url }) => {
+export const load = (async ({ fetch }) => {
   const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
     route: "/v1/site/dashboard/shops",
     method: "GET"

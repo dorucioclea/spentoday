@@ -49,7 +49,7 @@
 </form>
 
 <div class="flex flex-col mt-8">
-  {#each data.products as product, i (product.id)}
+  {#each data.products as product (product.id)}
     <a
       class="flex justify-between items-center hover:bg-secondary-50 p-4 border-b border-secondary-200"
       href={routes.shopProduct(data.shopId, product.id)}

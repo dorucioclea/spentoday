@@ -1,12 +1,9 @@
 <script lang="ts">
   import type { PageData } from "./$types"
-  import { error, redirect } from "@sveltejs/kit"
-  import { goto } from "$app/navigation"
+  import type { DashboardShop } from "./+page"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
-  import type { DashboardShop } from "./+page"
   import { routes } from "$lib"
-  import { shop } from "$lib/routes"
 
   export let data: PageData
   $: shops = data.shops ?? []

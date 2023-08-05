@@ -16,57 +16,41 @@
       return alert("You can only have 1 free .spentoday.com domain")
     }
 
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/site/domains/${data.shopId}`,
-      method: "POST",
-      body: { domain: domainInput }
-    })
-    if (!response) return alert("Can't add domain at the current moment.")
+    const res = await Api.addDomain(fetch, PUBLIC_API_URL, data.shopId, domainInput)
 
-    if (response.ok) {
-      var json = await Api.responseJson<Api.ShopDomain>(response)
-      if (!json) {
-        alert("Something went wrong.")
-        return
-      }
+    if (res.status == "ok") {
       domains.push({
-        domain: json.domain,
+        domain: res.data.domain,
         gotStatus: true,
-        verifications: json.verifications
+        verifications: res.data.verifications
       })
       domains = domains
       return
     }
 
-    if (response.status == 400) return alert("Domain isn't valid")
-    if (response.status == Api.CONFLICT) {
-      var reason = await Api.responseJson<"has-free-domain" | "domain-taken">(response)
-
-      if (reason == "has-free-domain") {
-        return alert("Тільки 1 бескоштовний .spentoday.com домен можливо додати.")
-      }
-
-      if (reason == "domain-taken") return alert("Домен вже занят.")
+    if (res.status == "has-free-domain") {
+      return alert("Тільки 1 бескоштовний .spentoday.com домен можливо додати.")
     }
-    if (response.status == 403) {
+    if (res.status == "domain-taken") return alert("Домен вже занят.")
+
+    if (res.status == "bad-domain") return alert("Домен не є коректним.")
+    if (res.status == "no-permission") {
       goto(routes.shop(data.shopId))
       return
     }
+
     alert("Can't add the domain at the current moment.")
   }
 
   async function removeDomain(domain: string) {
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/site/domains/${data.shopId}/${domain}`,
-      method: "DELETE"
-    })
-    if (!response) return alert("Can't remove now")
-
-    if (response.status == 400) return alert("bad request")
-    if (response.status == 404) return alert("domain not found")
-    if (!response.ok) return alert("Can't remove now")
-
-    domains = domains.filter((x) => x.domain != domain)
+    const res = await Api.removeDomain(fetch, PUBLIC_API_URL, data.shopId, domain)
+    if (res == "ok") {
+      domains = domains.filter((x) => x.domain != domain)
+      return
+    }
+    if (res == "not-found") return alert("Не можемо знайти домен")
+    if (res == "bad-domain") return alert("Домен не є корректним")
+    return alert("щось пішло не так")
   }
 
   async function verifyDomain(domain: string) {

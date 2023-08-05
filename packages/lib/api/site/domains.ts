@@ -45,3 +45,56 @@ export async function verifyDomain(
   if (response.status == 404) return { status: "bad-domain" }
   return { status: "problem" }
 }
+
+export async function removeDomain(
+  fetch: Fetch,
+  base: string,
+  shopId: string,
+  domain: string
+): Promise<"fail" | "ok" | "not-found" | "bad-domain"> {
+  const response = await secureFetch(fetch, base, {
+    route: `/v1/site/domains/${shopId}/${domain}`,
+    method: "DELETE"
+  })
+  if (!response) return "fail"
+  if (response.ok) return "ok"
+  if (response.status == 404) return "not-found"
+  if (response.status == 400) return "bad-domain"
+  return "fail"
+}
+
+export async function addDomain(
+  fetch: Fetch,
+  base: string,
+  shopId: string,
+  domain: string
+): Promise<
+  | {
+      status: "fail" | "no-permission" | "bad-domain" | "has-free-domain" | "domain-taken"
+    }
+  | {
+      data: ShopDomain
+      status: "ok"
+    }
+> {
+  const response = await secureFetch(fetch, base, {
+    route: `/v1/site/domains/${shopId}`,
+    method: "POST",
+    body: { domain: domain }
+  })
+  if (!response) return { status: "fail" }
+  if (response.ok) {
+    var json = await responseJson<ShopDomain>(response)
+    if (!json) return { status: "fail" }
+    return { data: json, status: "ok" }
+  }
+
+  if (response.status == 409) {
+    var reason = await responseJson<"has-free-domain" | "domain-taken">(response)
+    return { status: reason ?? "fail" }
+  }
+  if (response.status == 400) return { status: "bad-domain" }
+  if (response.status == 403) return { status: "no-permission" }
+
+  return { status: "fail" }
+}
