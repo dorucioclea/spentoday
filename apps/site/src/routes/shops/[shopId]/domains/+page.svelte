@@ -70,20 +70,31 @@
   }
 
   async function verifyDomain(domain: string) {
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/site/domains/${domain}/verify`,
-      method: "PATCH"
-    })
-    if (!response) return alert("Щось пішло не так. Зараз полагодимо.")
+    const res = await Api.verifyDomain(fetch, PUBLIC_API_URL, domain)
 
-    if (response.status == 200) {
+    if (res.status == "ok") {
       const domainElement = domains.find((x) => x.domain == domain)
-      if (domainElement) domainElement.verifications = undefined
+      if (domainElement) {
+        domainElement.gotStatus = true
+        domainElement.verifications = undefined
+        domains = domains
+      }
       return
     }
 
-    if (response.status == 202) return alert("Домен не підтверджено.")
-    if (response.status == 404) return alert("Домен не мажо буди порожнім.")
+    if (res.status == "not-verified") {
+      alert("Домен не підтверджено.")
+
+      const domainElement = domains.find((x) => x.domain == domain)
+      if (!domainElement || res.data.gotStatus == false) return
+
+      domainElement.gotStatus = true
+      domainElement.verifications = res.data.verifications
+      domains = domains
+      return
+    }
+
+    if (res.status == "bad-domain") return alert("Домен не мажо буди порожнім.")
     alert("Щось пішло не так. Зараз полагодимо.")
   }
 </script>
