@@ -1,5 +1,7 @@
 // place files you want to import through the `$lib` alias in this folder.
 
+export * as routes from "./routes"
+
 export function debounce(timer: number, action: Function) {
   return () => {
     clearTimeout(timer)
@@ -19,4 +21,20 @@ export function isValidSlug(slug: string): boolean {
   if (slug.startsWith("-") || slug.endsWith("-")) return false
   if (slug.includes("--")) return false
   return true
+}
+
+export function imageSize(file: File) {
+  return new Promise<{ width: number; height: number }>((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const image = new Image()
+
+    image.onload = () => {
+      const width = image.naturalWidth
+      const height = image.naturalHeight
+      resolve({ width, height })
+    }
+    image.onerror = reject
+
+    image.src = url
+  })
 }

@@ -6,7 +6,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.amber
+        primary: colors.green,
+        secondary: colors.gray
       }
     }
   },

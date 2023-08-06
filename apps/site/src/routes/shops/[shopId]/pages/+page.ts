@@ -17,7 +17,7 @@ type Page = {
 
 export const load = (async ({ fetch, params }) => {
   const response = await Api.publicFetch(fetch, PUBLIC_API_URL, {
-    route: `/v1/dashboard/${params.shopId}/pages`,
+    route: `/v1/site/dashboard/${params.shopId}/pages`,
     method: "GET"
   })
   if (!response) return { pages: [] as Page[] } //throw error(500)

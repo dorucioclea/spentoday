@@ -34,7 +34,7 @@
     }
 
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-      route: `/v1/dashboard/${data.shopId}/page`,
+      route: `/v1/site/dashboard/${data.shopId}/page`,
       method: "POST",
       body: { slug: newPageSlug }
     })

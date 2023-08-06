@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import { PUBLIC_API_URL } from "$env/static/public"
+  import { routes } from "$lib"
   import { Api } from "lib"
-  import { LoginStatus } from "lib/api"
   import { z } from "zod"
 
   const emailSchema = z.string().email()
@@ -16,17 +16,17 @@
   async function login() {
     const loginStatus = await Api.login(fetch, PUBLIC_API_URL, email, password)
 
-    if (loginStatus == LoginStatus.Success) {
-      goto("/dashboard")
+    if (loginStatus == "ok") {
+      goto(routes.dashboard)
       return
     }
 
-    if (loginStatus == LoginStatus.IncorrectPassword) {
+    if (loginStatus == "bad-password") {
       message = "Password is incorrect."
       return
     }
 
-    if (loginStatus == LoginStatus.EmailNotFound) {
+    if (loginStatus == "email-not-found") {
       message = "User with provided email isn't found."
       return
     }
@@ -82,10 +82,18 @@
   </form>
 
   <a
-    href="/register"
+    href={routes.register}
     class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
       mt-8 block text-center"
   >
     Don't have an account? Register.
+  </a>
+
+  <a
+    href={routes.accountForgot}
+    class="underline decoration-primary-200 hover:decoration-primary-300 decoration-2
+      mt-8 block text-center"
+  >
+    Forgot Password
   </a>
 </main>

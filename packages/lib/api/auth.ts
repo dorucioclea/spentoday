@@ -1,5 +1,6 @@
 import type { Fetch } from "./base"
-import { BAD_REQUEST, CONFLICT, NOT_FOUND, callPublic, publicFetch } from "./base"
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, PROBLEM, publicFetch } from "./base"
+import { Api } from "lib"
 
 /*
 
@@ -11,19 +12,12 @@ Possible login situation:
 
 */
 
-export enum LoginStatus {
-  Success,
-  EmailNotFound,
-  IncorrectPassword,
-  Fail
-}
-
 export async function login(
   fetch: Fetch,
   base: string,
   email: string,
   password: string
-): Promise<LoginStatus> {
+): Promise<"ok" | "fail" | "email-not-found" | "bad-password"> {
   var response = await publicFetch(fetch, base, {
     route: "/v1/auth/login",
     method: "POST",
@@ -33,17 +27,11 @@ export async function login(
     }
   })
 
-  if (!response) return LoginStatus.Fail
-
-  if (response.ok) return LoginStatus.Success
-
-  // bad request: incorrect password
-  if (response.status === BAD_REQUEST) return LoginStatus.IncorrectPassword
-
-  // not found: user wiht this email not found
-  if (response.status === NOT_FOUND) return LoginStatus.EmailNotFound
-
-  return LoginStatus.Fail
+  if (!response) return "fail"
+  if (response.ok) return "ok"
+  if (response.status === BAD_REQUEST) return "bad-password"
+  if (response.status === NOT_FOUND) return "email-not-found"
+  return "fail"
 }
 
 /*
@@ -63,6 +51,16 @@ export enum RegisterStatus {
   Fail
 }
 
+export type RegisterResult =
+  | { data: Response; status: RegisterStatus.EmailIsTaken }
+  | {
+      data?: undefined
+      status:
+        | RegisterStatus.Fail
+        | RegisterStatus.Success
+        | RegisterStatus.PasswordsMismatch
+    }
+
 export async function register(
   fetch: Fetch,
   base: string,
@@ -72,7 +70,7 @@ export async function register(
     password: string
     confirmPassword: string
   }
-): Promise<RegisterStatus> {
+): Promise<RegisterResult> {
   const response = await publicFetch(fetch, base, {
     route: "/v1/auth/register",
     method: "POST",
@@ -84,9 +82,71 @@ export async function register(
     }
   })
 
-  if (!response) return RegisterStatus.Fail
-  if (response.ok) return RegisterStatus.Success
-  if (response.status == CONFLICT) return RegisterStatus.EmailIsTaken
-  if (response.status == BAD_REQUEST) return RegisterStatus.PasswordsMismatch
-  return RegisterStatus.Fail
+  if (!response) return { status: RegisterStatus.Fail }
+  if (response.ok) return { status: RegisterStatus.Success }
+  console.log(response.status)
+  if (response.status == PROBLEM) {
+    const jsonData = await response.json()
+    return { data: jsonData, status: RegisterStatus.EmailIsTaken }
+  }
+  if (response.status == BAD_REQUEST) return { status: RegisterStatus.PasswordsMismatch }
+  return { status: RegisterStatus.Fail }
+}
+
+export enum ForgotStatus {
+  Success,
+  EmailNotFound,
+  Fail
+}
+
+export async function forgot(
+  fetch: Fetch,
+  base: string,
+  email: string
+): Promise<ForgotStatus> {
+  const response = await publicFetch(fetch, base, {
+    route: "/v1/auth/forgot",
+    method: "POST",
+    body: {
+      email: email
+    }
+  })
+
+  if (!response) return ForgotStatus.Fail
+  if (response.status === NOT_FOUND) return ForgotStatus.EmailNotFound
+  if (response.ok) return ForgotStatus.Success
+  return ForgotStatus.Fail
+}
+
+export enum ResetStatus {
+  Success,
+  EmailNotFound,
+  PasswordsMismatch,
+  Fail
+}
+
+export async function reset(
+  fetch: Fetch,
+  base: string,
+  email: string,
+  token: string,
+  password: string,
+  confirmPassword: string
+): Promise<ResetStatus> {
+  const response = await publicFetch(fetch, base, {
+    route: "/v1/auth/reset",
+    method: "POST",
+    body: {
+      email: email,
+      token: token,
+      password: password,
+      confirmPassword: confirmPassword
+    }
+  })
+
+  if (!response) return ResetStatus.Fail
+  if (response.status == NOT_FOUND) return ResetStatus.EmailNotFound
+  if (response.status == BAD_REQUEST) return ResetStatus.PasswordsMismatch
+  if (response.ok) return ResetStatus.Success
+  return ResetStatus.Fail
 }

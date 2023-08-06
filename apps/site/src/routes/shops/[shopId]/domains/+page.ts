@@ -1,4 +1,5 @@
 import { PUBLIC_API_URL } from "$env/static/public"
+import { error } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
 import { Api } from "lib"
 
@@ -8,26 +9,18 @@ import { Api } from "lib"
 - search orders of shop
 
 */
-export type ShopDomain = {
-  domain: string
-  verifications?: {
-    type: string
-    domain: string
-    value: string
-  }[]
-}
 
 export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
 
   const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
-    route: `/v1/domains/${shopId}`,
+    route: `/v1/site/domains/${shopId}`,
     method: "GET"
   })
-  if (response == null) return { domains: [] }
+  if (response == null) throw error(500, "Не можемо підгрузити ващі домени.")
 
-  const data = await Api.responseJson<ShopDomain[]>(response)
-  if (data == null) return {}
+  const data = await Api.responseJson<Api.ShopDomain[]>(response)
+  if (data == null) throw error(500, "Не можемо підгрузити ващі домени.")
 
   return {
     shopId: shopId,

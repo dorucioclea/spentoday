@@ -3,6 +3,8 @@
   import { z } from "zod"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
+  import { routes } from "$lib"
+  import { RegisterStatus } from "lib/api"
 
   const emailSchema = z.string().email()
 
@@ -32,17 +34,17 @@
       confirmPassword
     })
 
-    if (status == Api.RegisterStatus.Success) {
+    if (status.status == Api.RegisterStatus.Success) {
       goto("/dashboard")
       return
     }
 
-    if (status == Api.RegisterStatus.EmailIsTaken) {
-      message = "User with such email already exists."
+    if (status.status == RegisterStatus.EmailIsTaken) {
+      message = `Адреса ${email} вже зайнята`
       return
     }
 
-    if (status == Api.RegisterStatus.PasswordsMismatch) {
+    if (status.status == Api.RegisterStatus.PasswordsMismatch) {
       message = "Password mismatches confirm password."
       return
     }
@@ -114,7 +116,7 @@
   </form>
 
   <a
-    href="/login"
+    href={routes.login}
     class="underline decoration-primary-100 hover:decoration-primary-300 decoration-2
     mt-8 block text-center"
   >

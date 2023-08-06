@@ -1,9 +1,10 @@
 export * from "./base"
 export * from "./auth"
 export * from "./dashboard"
+export * from "./site"
 
 export type Image = {
-  provider: "storj" | "github"
+  provider: string // "storj" | "github"
   bucket: string
   key: string
 }
@@ -11,11 +12,15 @@ const storjShopsPublicKey = "jxacrqaiskr265rjf7wdytj72bcq"
 
 export function imageUrl(image: Image): string | null {
   if (image.provider == "storj") {
+    // shops bucket
     return `https://link.storjshare.io/raw/${storjShopsPublicKey}/${image.bucket}/${image.key}`
   }
 
-  // image.provider == "github"
-  return `https://raw.githubusercontent.com/flurium/${image.bucket}/main/${image.key}`
+  if (image.provider == "github") {
+    return `https://raw.githubusercontent.com/flurium/${image.bucket}/main/${image.key}`
+  }
+
+  return null
 }
 
 // async function upload() {
