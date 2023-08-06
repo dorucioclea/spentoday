@@ -51,9 +51,15 @@ export enum RegisterStatus {
   Fail
 }
 
-export type RegisterResult = 
-  | { data: Response, status: RegisterStatus.EmailIsTaken} 
-  | {data?:undefined, status: RegisterStatus.Fail | RegisterStatus.Success | RegisterStatus.PasswordsMismatch }
+export type RegisterResult =
+  | { data: Response; status: RegisterStatus.EmailIsTaken }
+  | {
+      data?: undefined
+      status:
+        | RegisterStatus.Fail
+        | RegisterStatus.Success
+        | RegisterStatus.PasswordsMismatch
+    }
 
 export async function register(
   fetch: Fetch,
@@ -80,8 +86,8 @@ export async function register(
   if (response.ok) return { status: RegisterStatus.Success }
   console.log(response.status)
   if (response.status == PROBLEM) {
-    const jsonData = await response.json();
-    return { data: jsonData, status: RegisterStatus.EmailIsTaken };
+    const jsonData = await response.json()
+    return { data: jsonData, status: RegisterStatus.EmailIsTaken }
   }
   if (response.status == BAD_REQUEST) return { status: RegisterStatus.PasswordsMismatch }
   return { status: RegisterStatus.Fail }
