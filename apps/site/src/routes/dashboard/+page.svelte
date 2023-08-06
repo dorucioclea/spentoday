@@ -4,7 +4,6 @@
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import { routes } from "$lib"
-    import { goto } from '$app/navigation'
 
   export let data: PageData
   $: shops = data.shops ?? []
@@ -43,12 +42,7 @@
     if (response.ok) {
       shops = shops.filter((x) => x.id != shopId)
       return
-    
-
-  }
-
-  async function toShop(shopId:string) {
-   goto(`/shop/${shopId}/settings`)
+    }
   }
 </script>
 

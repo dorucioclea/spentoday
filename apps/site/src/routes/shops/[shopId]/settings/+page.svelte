@@ -1,24 +1,26 @@
 <script lang="ts">
-  import { Api } from "lib"
-  import type { PageLoad } from "./$types"
-  import { PUBLIC_API_URL } from "$env/static/public"
-  import { goto } from "$app/navigation"
-  import { error, redirect } from "@sveltejs/kit"
-  import { z } from "zod"
-  import type { Link, Banner } from "./+page"
   import type { PageData } from "./$types"
+  import { goto } from "$app/navigation"
+  import { PUBLIC_API_URL } from "$env/static/public"
+  import { Api } from "lib"
+  import type { Link, Banner } from "./+page"
+
   export let data: PageData
+
   $: links = data.links ?? []
   $: banners = data.banners ?? []
-  $: shopName = data.name 
-  $: logo = data.logo
+  $: shopName = data.name
+  let logo = data.logo
+
   let name: string = ""
   let link: string = ""
   let bannerFiles: FileList
   let logoFiles: FileList
   let shopNameInput: string = ""
+
   $: isInvalidLink = name.trim() == "" || link.trim() == ""
   $: isInvalidName = shopNameInput.trim() == ""
+
   async function addLink() {
     const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
       route: `/v1/site/shopsettings/${data.shopId}/addlink`,
@@ -54,14 +56,14 @@
 
     if (!response) return alert("we can`t delete it now, try later")
 
-    if (response.status == 403 || response.status == 401) goto("/login")
-
-    if (!response.ok) goto("/")
-
     if (response.ok) {
       links = links.filter((x) => x.id != linkId)
       return
     }
+
+    if (response.status == 403 || response.status == 401) goto("/login")
+
+    goto("/")
   }
 
   async function addBanner() {
@@ -140,16 +142,16 @@
     console.log(response)
     if (!response) return alert("we can`t add it now, try later")
 
+    if (response.ok) {
+      const json = await Api.responseJson<string>(response)
+      if (!json) return alert("aaa")
+      logo = json
+      return
+    }
+
     if (response.status == 403 || response.status == 401) goto("/login")
 
-    if (!response.ok) goto("/")
-     
-    let LogoIs= await Api.responseJson<string>(response)
-    if(LogoIs!= null){
-      logo = LogoIs
-    }
-      return
-    
+    goto("/")
   }
 </script>
 

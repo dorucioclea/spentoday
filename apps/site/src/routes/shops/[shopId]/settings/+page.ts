@@ -13,7 +13,7 @@ export type Link = {
   link: string
   name: string
 }
-export type Shopsettings={
+export type Shopsettings = {
   banners: Banner[]
   links: Link[]
   name: string
@@ -22,29 +22,24 @@ export type Shopsettings={
 
 export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
+
   const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
     route: `/v1/site/shopsettings/${shopId}/getshop`,
     method: "GET"
   })
-  console.log(response)
+
   if (!response) throw error(500)
-  if (response.status == 403 || response.status == 401)
-    throw redirect(302, "/login")
+  if (response.status == 403 || response.status == 401) throw redirect(302, "/login")
   if (!response.ok) throw redirect(302, "/")
 
   const shop = await Api.responseJson<Shopsettings>(response)
-  console.log(shop)
-  if(shop == null) throw error(500)
-  const banners = shop.banners
-  const links = shop.links
-  const name = shop.name
-  const logo = shop.logo
-  console.log(logo)
- return {
+  if (shop == null) throw error(500)
+
+  return {
     shopId,
-    logo,
-    name,
-    banners,
-    links
+    logo: shop.logo,
+    name: shop.name,
+    banners: shop.banners,
+    links: shop.links
   }
 }) satisfies PageLoad
