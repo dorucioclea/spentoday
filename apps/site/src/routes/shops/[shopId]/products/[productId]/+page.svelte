@@ -65,7 +65,7 @@
     event: Event & { currentTarget: EventTarget & HTMLInputElement }
   ) {
     const file = event.currentTarget.files?.item(0)
-    if (!file) return alert("Can't upload")
+    if (!file) return
 
     const { width, height } = await imageSize(file)
     if (width != height) return alert("Only 1:1 images are supported")

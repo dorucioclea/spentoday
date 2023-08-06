@@ -71,6 +71,7 @@ export async function addDomain(
 ): Promise<
   | {
       status: "fail" | "no-permission" | "bad-domain" | "has-free-domain" | "domain-taken"
+      data?: undefined
     }
   | {
       data: ShopDomain
