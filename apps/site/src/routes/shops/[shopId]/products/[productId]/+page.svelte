@@ -8,6 +8,7 @@
   export let data: PageData
   $: images = data.product.images
   $: categories = data.categories
+  let isDraft = data.product.isDraft
 
   let name: string = data.product.name
   let price: number = data.product.price
@@ -88,16 +89,39 @@
     if (!deleted) return alert("Не можемо видалити зображення!")
     images = images.filter((x) => x.id != imageId)
   }
+
+  async function publish() {
+    const result = await Api.publishProduct(fetch, PUBLIC_API_URL, data.productId)
+    if (result == "ok") {
+      data.product.isDraft = false
+      isDraft = false
+      return
+    }
+
+    if (result == "not-found") return alert("Не можемо знайти продукт")
+    alert("Не можемо опублікувати продукт")
+  }
 </script>
 
 <h1 class="text-3xl text-center my-10 font-semibold">Редактувати продукт</h1>
 
-<div class="py-3 sticky top-0 max-w-3xl m-auto bg-white border-b border-gray-100">
-  {status}
+<div
+  class="py-3 sticky flex justify-between top-0 max-w-3xl m-auto bg-white border-b border-gray-100"
+>
+  <span>{status}</span>
+
+  {#if data.product.isDraft}
+    <button
+      class="underline decoration-2 decoration-secondary-300 hover:decoration-primary-400"
+      on:click={publish}
+    >
+      Publish
+    </button>
+  {/if}
 </div>
 
 <section class="flex flex-col gap-4 max-w-3xl m-auto">
-  <div>
+  <!-- <div>
     {#each categories as category}
       {#if category.assigned}
         <span class="px-3 py-2 bg-green-200">{category.name}</span>
@@ -105,7 +129,7 @@
         <span class="px-3 py-2 bg-secondary-100">{category.name}</span>
       {/if}
     {/each}
-  </div>
+  </div> -->
 
   <div class="grid grid-cols-4 gap-2 my-4">
     {#each images as image (image.id)}

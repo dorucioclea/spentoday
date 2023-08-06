@@ -47,6 +47,24 @@ export async function oneProduct(fetch: Fetch, base: string, productId: string) 
 }
 
 //
+// PUBLISH PRODUCT
+
+export async function publishProduct(
+  fetch: Fetch,
+  base: string,
+  productId: string
+): Promise<"ok" | "fail" | "not-found"> {
+  const response = await secureFetch(fetch, base, {
+    route: `/v1/site/products/${productId}/publish`,
+    method: "POST"
+  })
+  if (!response) return "fail"
+  if (response.ok) return "ok"
+  if (response.status == 404) return "not-found"
+  return "fail"
+}
+
+//
 // UPLOAD PRODUCT IMAGE
 export async function uploadProductImage(
   fetch: Fetch,
