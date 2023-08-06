@@ -19,23 +19,12 @@ export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
       "double-submit": "ueqc1"
     })
 
-<<<<<<< HEAD
-    let body = undefined
-    if (info.body) {
-      if (info.body instanceof FormData) {
-        body = info.body
-      } else {
-        headers.append("content-type", "application/json")
-        body = JSON.stringify(info.body)
-      }
-=======
-    let body
+    let body: BodyInit | undefined
     if (info.body == undefined || info.body instanceof FormData) {
       body = info.body
     } else {
       headers.append("content-type", "application/json")
       body = JSON.stringify(info.body)
->>>>>>> dev
     }
 
     const response = await fetch(new URL(info.route, base), {
@@ -58,23 +47,12 @@ export async function publicFetch(fetch: Fetch, base: string, info: CallInfo) {
       accept: "application/json"
     })
 
-<<<<<<< HEAD
-    let body = undefined
-    if (info.body) {
-      if (info.body instanceof FormData) {
-        body = info.body
-      } else {
-        headers.append("content-type", "application/json")
-        body = JSON.stringify(info.body)
-      }
-=======
-    let body
+    let body: BodyInit | undefined
     if (info.body == undefined || info.body instanceof FormData) {
       body = info.body
     } else {
       headers.append("content-type", "application/json")
       body = JSON.stringify(info.body)
->>>>>>> dev
     }
 
     const response = await fetch(new URL(info.route, base), {
