@@ -4,6 +4,9 @@
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import { routes } from "$lib"
+  import type { PageData } from "./$types"
+
+  export let data:PageData
 
   let name: string = ""
 
@@ -12,14 +15,14 @@
   let confirmPassword: string = ""
 
   let message: string | null = null
-  let message1: string | null = null
-  let message2: string | null = null
-  let message3: string | null = null
+  let messageName: string | null = null
+  let messagePassword: string | null = null
+  let messageImage: string | null = null
 
-  $: isInvalid1 =
+  $: isInvalidName =
     name.trim() == "" 
 
-  $: isInvalid2 =
+  $: isInvalidPassword =
     confirmPassword.trim() == "" ||
     newPassword.trim() == "" ||
     currentPassword.trim() == ""
@@ -30,27 +33,27 @@
 
     if (status == "success") {
         message = "Ім'я успішно змінено"
-        message1 = ""
-      goto("/settings")
+        messageName = ""
+      goto(routes.accountSettings)
       return
     }
 
     if (status == "not-found") {
-      message1 = "Користувач не знайдений"
+      messageName = "Користувач не знайдений"
       return
     }
 
     if (status == "fail") {
-      message1 = "Сервер не відповідає"
+      messageName = "Сервер не відповідає"
       return
     }
 
-    message1 = "Щось пішло не так"
+    messageName = "Щось пішло не так"
   }
 
   async function changePassword() {
     if (newPassword != confirmPassword) {
-      message2 = "Паролі не співпадають"
+      messagePassword = "Паролі не співпадають"
       return
     }
   
@@ -58,26 +61,26 @@
 
     if (status == "success") {
         message = "Пароль успішно змінений"
-        message2 = ""
-      goto("/settings")
+        messagePassword = ""
+      goto(routes.accountSettings)
       return
     }
 
     if (status == "not found") {
-      message2 = "Користувач не знайдений"
+      messagePassword = "Користувач не знайдений"
       return
     }
 
     if (status == "fail") {
-      message2 = "Сервер не відповідає"
+      messagePassword = "Сервер не відповідає"
       return
     }
 
     if (status == "passwords mismatch") {
-        message2 = "Паролі не співпадають"
+        messagePassword = "Паролі не співпадають"
     }
 
-    message2 = "Щось пішло не так"
+    messagePassword = "Щось пішло не так"
   }
 
 async function setUserImage(
@@ -91,17 +94,17 @@ async function setUserImage(
     })
     
     if (result == "not-found") {
-      message3 = "Користувач не знайдений"
+      messageImage = "Користувач не знайдений"
       return
     }
 
     if (result == "fail") {
-      message3 = "Сервер не відповідає"
+      messageImage = "Сервер не відповідає"
       return
     }
 
     if (result == "not-image") {
-      message3 = "Не зображення"
+      messageImage = "Не зображення"
       return
     }
 
@@ -111,7 +114,7 @@ async function setUserImage(
       return
     }
 
-    message3 = "Щось пішло не так" 
+    messageImage = "Щось пішло не так" 
   }
 
 </script>
@@ -136,23 +139,23 @@ async function setUserImage(
     on:submit|preventDefault={changeName}
     class="max-w-lg m-auto flex flex-col gap-4 mt-2"
   >
-    {#if message1}
+    {#if messageName}
       <div class="px-5 py-3 border border-red-200 bg-red-100 rounded-md text-red-800">
-        {message1}
+        {messageName}
       </div>
     {/if}
 
     <input
       class="bg-gray-100 focus:bg-gray-50 px-6 py-4 rounded-md border border-gray-200"
       bind:value={name}
-      placeholder="New name"
+      placeholder={data.name}
     />
 
     <button
       class="bg-primary-500 disabled:bg-gray-100 font-semibold px-6 py-3 text-white
        hover:bg-primary-400 disabled:text-gray-400 rounded-md"
       type="submit"
-      disabled={isInvalid1}
+      disabled={isInvalidName}
     >
       Change name
     </button>
@@ -162,9 +165,9 @@ async function setUserImage(
     on:submit|preventDefault={changePassword}
     class="max-w-lg m-auto flex flex-col gap-4 mt-2"
   >
-    {#if message2}
+    {#if messagePassword}
       <div class="px-5 py-3 border border-red-200 bg-red-100 rounded-md text-red-800">
-        {message2}
+        {messagePassword}
       </div>
     {/if}
 
@@ -193,13 +196,13 @@ async function setUserImage(
       class="bg-primary-500 disabled:bg-gray-100 font-semibold px-6 py-3 text-white
        hover:bg-primary-400 disabled:text-gray-400 rounded-md"
       type="submit"
-      disabled={isInvalid2}
+      disabled={isInvalidPassword}
     >
       Change password
     </button>
   </form>
-
-  <div>
+        <div class="max-w-lg m-auto flex flex-col gap-4 mt-2 text-center">
+          <img src={data.imageUrl} alt="user-img">
     <p>Встановити зображення профілю</p>
         <input
           on:change={setUserImage}
@@ -208,12 +211,13 @@ async function setUserImage(
           type="file"
         />
   </div>
-    
-  <a
-    href={"/account/settings/delete"}
-    class="underline decoration-primary-100 hover:decoration-primary-300 decoration-2
-    mt-8 block text-center"
-  >
-    Хочете видалити свій аккаунт? Вже залишаєте нас?
-  </a>
+  
+  <div class="max-w-sm m-auto flex flex-col gap-4 mt-2">
+    <a
+      title="Хочете видалити свій аккаунт? Вже залишаєте нас?"
+      href={routes.accountDelete}
+      class="px-8 py-2 rounded-full bg-red-400 text-center"
+    >Видалити аккаунт</a>
+  </div>
+  
 </main>

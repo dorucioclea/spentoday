@@ -3,6 +3,8 @@ export const register = "/register"
 export const accountForgot = "/account/forgot"
 export const accountConfirm = "/account/confirm"
 export const accountConfirmSuccess = "/account/confirm-success"
+export const accountSettings = "/account/settings"
+export const accountDelete = "/account/settings/delete"
 
 export const dashboard = "/dashboard"
 

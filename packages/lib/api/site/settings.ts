@@ -32,7 +32,7 @@ export async function changeName(
   base: string,
   name: string,
 ): Promise<ChangeNameStatus> {
-  var response = await publicFetch(fetch, base, {
+  var response = await secureFetch(fetch, base, {
     route: "/v1/site/account/name",
     method: "POST",
     body: {
@@ -83,7 +83,7 @@ export async function changePassword(
   newPassword: string,
   confirmPassword: string
 ): Promise<ChangePasswordStatus> {
-  const response = await publicFetch(fetch, base, {
+  const response = await secureFetch(fetch, base, {
     route: "/v1/site/account/password",
     method: "POST",
     body: {
@@ -106,7 +106,7 @@ export async function deleteAccount(
   email: string,
   password: string,
 ): Promise<DeleteAccountStatus> {
-  const response = await publicFetch(fetch, base, {
+  const response = await secureFetch(fetch, base, {
     route: "/v1/site/account/delete",
     method: "POST",
     body: {
