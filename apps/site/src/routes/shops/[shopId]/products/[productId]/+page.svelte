@@ -103,7 +103,7 @@
   }
 </script>
 
-<h1 class="text-3xl text-center my-10 font-semibold">Редактувати продукт</h1>
+<h1 class="text-3xl text-center my-10 font-semibold">Редагувати продукт</h1>
 
 <div
   class="py-3 sticky flex justify-between top-0 max-w-3xl m-auto bg-white border-b border-gray-100"
