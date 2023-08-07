@@ -1,4 +1,3 @@
-import { dev } from "$app/environment"
 import type { HandleFetch } from "@sveltejs/kit"
 
 export const handleFetch = (async ({ event, request, fetch }) => {

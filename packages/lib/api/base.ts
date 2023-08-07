@@ -19,7 +19,7 @@ export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
       "double-submit": "ueqc1"
     })
 
-    let body
+    let body: BodyInit | undefined
     if (info.body == undefined || info.body instanceof FormData) {
       body = info.body
     } else {
@@ -47,7 +47,7 @@ export async function publicFetch(fetch: Fetch, base: string, info: CallInfo) {
       accept: "application/json"
     })
 
-    let body
+    let body: BodyInit | undefined
     if (info.body == undefined || info.body instanceof FormData) {
       body = info.body
     } else {

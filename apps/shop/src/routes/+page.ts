@@ -1,6 +1,3 @@
-import { Api } from "lib"
-import { api } from "$lib"
-import { redirect } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
 
 type ShopProduct = {
@@ -9,13 +6,13 @@ type ShopProduct = {
   price: string
 }
 
-type Shop = {
-  seo: {
-    title: string
-    description: string
-  }
-  products: ShopProduct[]
-}
+// type Shop = {
+//   seo: {
+//     title: string
+//     description: string
+//   }
+//   products: ShopProduct[]
+// }
 
 /*
 
@@ -29,7 +26,7 @@ Page need:
 
 */
 
-export const load = (async ({ url, fetch, params }) => {
+export const load = (async ({ url }) => {
   // const shop = params.shop;
 
   // shop.spentoday.com

@@ -4,7 +4,7 @@
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import { routes } from "$lib"
-    import { RegisterStatus } from "lib/api"
+  import { RegisterStatus } from "lib/api"
 
   const emailSchema = z.string().email()
 
@@ -27,7 +27,6 @@
       return
     }
 
-    
     const status = await Api.register(fetch, PUBLIC_API_URL, {
       name,
       email,

@@ -22,3 +22,19 @@ export function isValidSlug(slug: string): boolean {
   if (slug.includes("--")) return false
   return true
 }
+
+export function imageSize(file: File) {
+  return new Promise<{ width: number; height: number }>((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const image = new Image()
+
+    image.onload = () => {
+      const width = image.naturalWidth
+      const height = image.naturalHeight
+      resolve({ width, height })
+    }
+    image.onerror = reject
+
+    image.src = url
+  })
+}

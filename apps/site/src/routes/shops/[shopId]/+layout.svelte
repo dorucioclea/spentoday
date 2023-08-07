@@ -6,12 +6,12 @@
   export let data: LayoutData
 
   const links = [
-    { name: "Products", href: routes.shop(data.shopId) },
-    { name: "Orders", href: routes.shopOrders(data.shopId) },
-    { name: "Categories", href: routes.shopCategories(data.shopId) },
-    { name: "Domains", href: routes.shopDomains(data.shopId) },
-    { name: "Pages", href: routes.shopPages(data.shopId) },
-    { name: "Settings", href: routes.shopSettings(data.shopId) }
+    { name: "Продукти", href: routes.shop(data.shopId) },
+    { name: "Замовлення", href: routes.shopOrders(data.shopId) },
+    { name: "Категорії", href: routes.shopCategories(data.shopId) },
+    { name: "Домени", href: routes.shopDomains(data.shopId) },
+    { name: "Сторінки", href: routes.shopPages(data.shopId) },
+    { name: "Налаштування", href: routes.shopSettings(data.shopId) }
   ]
 </script>
 
