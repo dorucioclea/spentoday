@@ -1,12 +1,11 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import { z } from "zod"
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import { routes } from "$lib"
   import type { PageData } from "./$types"
 
-  export let data:PageData
+  export let data: PageData
 
   let name: string = ""
 
@@ -19,8 +18,7 @@
   let messagePassword: string | null = null
   let messageImage: string | null = null
 
-  $: isInvalidName =
-    name.trim() == "" 
+  $: isInvalidName = name.trim() == ""
 
   $: isInvalidPassword =
     confirmPassword.trim() == "" ||
@@ -28,12 +26,11 @@
     currentPassword.trim() == ""
 
   async function changeName() {
-  
     const status = await Api.changeName(fetch, PUBLIC_API_URL, name)
 
     if (status == "success") {
-        message = "Ім'я успішно змінено"
-        messageName = ""
+      message = "Ім'я успішно змінено"
+      messageName = ""
       goto(routes.accountSettings)
       return
     }
@@ -56,17 +53,23 @@
       messagePassword = "Паролі не співпадають"
       return
     }
-  
-    const status = await Api.changePassword(fetch, PUBLIC_API_URL, currentPassword, newPassword, confirmPassword)
+
+    const status = await Api.changePassword(
+      fetch,
+      PUBLIC_API_URL,
+      currentPassword,
+      newPassword,
+      confirmPassword
+    )
 
     if (status == "success") {
-        message = "Пароль успішно змінений"
-        messagePassword = ""
+      message = "Пароль успішно змінений"
+      messagePassword = ""
       goto(routes.accountSettings)
       return
     }
 
-    if (status == "not found") {
+    if (status == "not-found") {
       messagePassword = "Користувач не знайдений"
       return
     }
@@ -76,14 +79,14 @@
       return
     }
 
-    if (status == "passwords mismatch") {
-        messagePassword = "Паролі не співпадають"
+    if (status == "passwords-mismatch") {
+      messagePassword = "Паролі не співпадають"
     }
 
     messagePassword = "Щось пішло не так"
   }
 
-async function setUserImage(
+  async function setUserImage(
     event: Event & { currentTarget: EventTarget & HTMLInputElement }
   ) {
     const file = event.currentTarget.files?.item(0)
@@ -92,31 +95,24 @@ async function setUserImage(
     const result = await Api.uploadUserImage(fetch, PUBLIC_API_URL, {
       file: file
     })
-    
-    if (result == "not-found") {
+
+    if (result.status == "success") {
+      console.log(result.data)
+      message = "Зображення профілю успішно змінене"
+      return
+    }
+
+    if (result.status == "not-found") {
       messageImage = "Користувач не знайдений"
       return
     }
 
-    if (result == "fail") {
-      messageImage = "Сервер не відповідає"
-      return
-    }
-
-    if (result == "not-image") {
+    if (result.status == "not-image") {
       messageImage = "Не зображення"
       return
     }
-
-    if (typeof result === 'object') {
-        console.log(result.data)
-        message = "Зображення профілю успішно змінене"
-      return
-    }
-
-    messageImage = "Щось пішло не так" 
+    messageImage = "Щось пішло не так"
   }
-
 </script>
 
 <svelte:head>
@@ -130,10 +126,10 @@ async function setUserImage(
   </p>
 
   {#if message}
-      <div class="px-5 py-3 border border-green-200 bg-green-100 rounded-md text-green-800">
-        {message}
-      </div>
-    {/if}
+    <div class="px-5 py-3 border border-green-200 bg-green-100 rounded-md text-green-800">
+      {message}
+    </div>
+  {/if}
 
   <form
     on:submit|preventDefault={changeName}
@@ -201,23 +197,17 @@ async function setUserImage(
       Change password
     </button>
   </form>
-        <div class="max-w-lg m-auto flex flex-col gap-4 mt-2 text-center">
-          <img src={data.imageUrl} alt="user-img">
+  <div class="max-w-lg m-auto flex flex-col gap-4 mt-2 text-center">
+    <img src={data.imageUrl} alt="user-img" />
     <p>Встановити зображення профілю</p>
-        <input
-          on:change={setUserImage}
-          id="dropzone-file"
-          accept="image/*"
-          type="file"
-        />
+    <input on:change={setUserImage} id="dropzone-file" accept="image/*" type="file" />
   </div>
-  
+
   <div class="max-w-sm m-auto flex flex-col gap-4 mt-2">
     <a
       title="Хочете видалити свій аккаунт? Вже залишаєте нас?"
       href={routes.accountDelete}
-      class="px-8 py-2 rounded-full bg-red-400 text-center"
-    >Видалити аккаунт</a>
+      class="px-8 py-2 rounded-full bg-red-400 text-center">Видалити аккаунт</a
+    >
   </div>
-  
 </main>

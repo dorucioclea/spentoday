@@ -4,7 +4,7 @@
   import { PUBLIC_API_URL } from "$env/static/public"
   import { Api } from "lib"
   import { routes } from "$lib"
-    import { RegisterStatus } from "lib/api"
+  import { RegisterStatus } from "lib/api"
 
   const emailSchema = z.string().email()
 
@@ -13,15 +13,10 @@
 
   let message: string | null = null
 
-  $: isInvalid =
-    password.trim() == "" ||
-    !emailSchema.safeParse(email).success
+  $: isInvalid = password.trim() == "" || !emailSchema.safeParse(email).success
 
   async function deleteAccount() {
-
-    const status = await Api.deleteAccount(fetch, PUBLIC_API_URL,
-      email,
-      password)
+    const status = await Api.deleteAccount(fetch, PUBLIC_API_URL, email, password)
 
     if (status == "success") {
       goto("/login")
@@ -49,8 +44,7 @@
 <main class="min-h-[70vh] max-w-screen-xl m-auto px-6">
   <h1 class="text-4xl md:text-6xl text-center m-auto font-bold">Видалити</h1>
   <p class="text-center text-gray-600 mt-6 max-w-3xl m-auto mb-10">
-    Прикро що Ви лишаєте нас.
-    Для підтвердження введіть свою електронну адресу і пароль.
+    Прикро що Ви лишаєте нас. Для підтвердження введіть свою електронну адресу і пароль.
   </p>
 
   <form
@@ -86,5 +80,4 @@
       Видалити аккаунт
     </button>
   </form>
-
 </main>

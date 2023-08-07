@@ -9,25 +9,24 @@ export type UserOutput = {
   imageUrl: string
 }
 
-export const load = (async ({fetch}) => {
- 
-    var response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+export const load = (async ({ fetch }) => {
+  var response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
     route: "/v1/site/account/user",
     method: "GET"
   })
   if (!response) {
-    return {
-      message: "Сервер не працює."
-    }
+    throw error(500, { message: "Сервер не працює" })
   }
 
   if (response.ok) {
     var user = await responseJson<UserOutput>(response)
-    if (user == null) throw error
+    if (user == null) throw error(500, { message: "Щось не так" })
 
     return {
-        name: user.name,
-        imageUrl: user.imageUrl
+      name: user.name,
+      imageUrl: user.imageUrl
     }
   }
+
+  throw error(500, { message: "Щось не так" })
 }) satisfies PageLoad

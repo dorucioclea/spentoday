@@ -1,36 +1,21 @@
 import type { Fetch } from "../base"
-import { BAD_REQUEST, NOT_FOUND, publicFetch, secureFetch, responseJson} from "../base"
+import { BAD_REQUEST, NOT_FOUND, publicFetch, secureFetch, responseJson } from "../base"
 
-type ChangeNameStatus = 
-| "not-found"
-| "problem"
-| "success"
-| "fail"
+type ChangeNameStatus = "not-found" | "problem" | "success" | "fail"
 
-type ChangeImageStatus = 
-| "not-found"
-| "not-image"
-| "problem"
-| "success"
-| "fail"
+type ChangePasswordStatus =
+  | "not-found"
+  | "passwords-mismatch"
+  | "problem"
+  | "success"
+  | "fail"
 
-type ChangePasswordStatus = 
-| "not found"
-| "passwords mismatch"
-| "problem"
-| "success"
-| "fail"
-
-type DeleteAccountStatus = 
-| "not-found"
-| "problem"
-| "success"
-| "fail"
+type DeleteAccountStatus = "not-found" | "problem" | "success" | "fail"
 
 export async function changeName(
   fetch: Fetch,
   base: string,
-  name: string,
+  name: string
 ): Promise<ChangeNameStatus> {
   var response = await secureFetch(fetch, base, {
     route: "/v1/site/account/name",
@@ -55,7 +40,10 @@ export async function uploadUserImage(
   input: {
     file: File
   }
-): Promise<ChangeImageStatus | {data: string, st: "success"}> {
+): Promise<
+  | { status: "not-found" | "not-image" | "problem" | "fail" }
+  | { data: string; status: "success" }
+> {
   const formData = new FormData()
   formData.append("file", input.file)
 
@@ -64,16 +52,16 @@ export async function uploadUserImage(
     method: "POST",
     body: formData
   })
-  if (!response) return "fail"
+  if (!response) return { status: "fail" }
   if (response.ok) {
     const json = await responseJson<string>(response)
-    if (!json) return "problem"
-    return {data: json, st: "success"}
+    if (!json) return { status: "problem" }
+    return { data: json, status: "success" }
   }
 
-  if (response.status == BAD_REQUEST) return "not-image"
-  if (response.status == NOT_FOUND) return "not-found"
-  return "problem"
+  if (response.status == BAD_REQUEST) return { status: "not-image" }
+  if (response.status == NOT_FOUND) return { status: "not-found" }
+  return { status: "problem" }
 }
 
 export async function changePassword(
@@ -94,8 +82,8 @@ export async function changePassword(
   })
 
   if (!response) return "fail"
-  if (response.status === NOT_FOUND) return "not found"
-  if (response.status === BAD_REQUEST) return "passwords mismatch"
+  if (response.status === NOT_FOUND) return "not-found"
+  if (response.status === BAD_REQUEST) return "passwords-mismatch"
   if (response.ok) return "success"
   return "problem"
 }
@@ -104,7 +92,7 @@ export async function deleteAccount(
   fetch: Fetch,
   base: string,
   email: string,
-  password: string,
+  password: string
 ): Promise<DeleteAccountStatus> {
   const response = await secureFetch(fetch, base, {
     route: "/v1/site/account/delete",
