@@ -16,7 +16,10 @@
       return alert("You can only have 1 free .spentoday.com domain")
     }
 
-    const res = await Api.addDomain(fetch, PUBLIC_API_URL, data.shopId, domainInput)
+    const res = await Api.addDomain(fetch, PUBLIC_API_URL, {
+      shopId: data.shopId,
+      domain: domainInput
+    })
 
     if (res.status == "ok") {
       domains.push({

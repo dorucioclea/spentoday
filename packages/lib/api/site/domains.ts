@@ -66,8 +66,10 @@ export async function removeDomain(
 export async function addDomain(
   fetch: Fetch,
   base: string,
-  shopId: string,
-  domain: string
+  input: {
+    shopId: string
+    domain: string
+  }
 ): Promise<
   | {
       status: "fail" | "no-permission" | "bad-domain" | "has-free-domain" | "domain-taken"
@@ -79,9 +81,9 @@ export async function addDomain(
     }
 > {
   const response = await secureFetch(fetch, base, {
-    route: `/v1/site/domains/${shopId}`,
+    route: `/v1/site/domains/${input.shopId}`,
     method: "POST",
-    body: { domain: domain }
+    body: { domain: input.domain }
   })
   if (!response) return { status: "fail" }
   if (response.ok) {

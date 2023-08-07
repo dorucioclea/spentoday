@@ -5,14 +5,14 @@ export type Fetch = (
   init?: RequestInit | undefined
 ) => Promise<Response>
 
-type CallInfo = {
+export type FetchInfo = {
   route: `/${string}`
   method: HttpMethod
   body?: FormData | object
 }
 
 /** Send request to secure route of api */
-export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
+export async function secureFetch(fetch: Fetch, base: string, info: FetchInfo) {
   try {
     const headers = new Headers({
       accept: "application/json",
@@ -41,7 +41,7 @@ export async function secureFetch(fetch: Fetch, base: string, info: CallInfo) {
 }
 
 /** Send request to public route of api */
-export async function publicFetch(fetch: Fetch, base: string, info: CallInfo) {
+export async function publicFetch(fetch: Fetch, base: string, info: FetchInfo) {
   try {
     const headers = new Headers({
       accept: "application/json"
