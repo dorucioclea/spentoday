@@ -2,6 +2,12 @@
 
 There we describe how to get money from Spentoday.
 
+## Plans
+
+Pro:
+
+- email notifications about orders
+
 ## Clients
 
 Potential clients and prospects:

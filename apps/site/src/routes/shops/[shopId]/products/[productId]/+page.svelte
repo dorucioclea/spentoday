@@ -101,6 +101,18 @@
     if (result == "not-found") return alert("Не можемо знайти продукт")
     alert("Не можемо опублікувати продукт")
   }
+
+  let categoryIdToChange: string | null
+  async function changeCategory() {
+    if (categoryIdToChange == null) return
+
+    const changed = await Api.changeProductCategory(fetch, PUBLIC_API_URL, {
+      productId: data.productId,
+      categoryId: categoryIdToChange
+    })
+
+    if (!changed) return alert("AAAAA")
+  }
 </script>
 
 <h1 class="text-3xl text-center my-10 font-semibold">Редактувати продукт</h1>
@@ -121,15 +133,16 @@
 </div>
 
 <section class="flex flex-col gap-4 max-w-3xl m-auto">
-  <!-- <div>
+  <select
+    bind:value={categoryIdToChange}
+    on:change={changeCategory}
+    class="bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+  >
+    <option value={null}>No category</option>
     {#each categories as category}
-      {#if category.assigned}
-        <span class="px-3 py-2 bg-green-200">{category.name}</span>
-      {:else}
-        <span class="px-3 py-2 bg-secondary-100">{category.name}</span>
-      {/if}
+      <option value={category.id} selected={category.assigned}>{category.name}</option>
     {/each}
-  </div> -->
+  </select>
 
   <div class="grid grid-cols-4 gap-2 my-4">
     {#each images as image (image.id)}
@@ -182,27 +195,27 @@
   <!-- <button on:click={uploadImage}>Upload file</button> -->
 
   <input
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={name}
     on:keyup={debounceChange}
     placeholder="Name"
   />
   <textarea
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={description}
     on:keyup={debounceChange}
     placeholder="Опис"
     rows="10"
   />
   <input
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={price}
     on:keyup={debounceChange}
     type="number"
     placeholder="Price"
   />
   <input
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={amount}
     on:keyup={debounceChange}
     type="number"
@@ -211,11 +224,13 @@
 
   <h3 class="mt-4 text-2xl">SEO - search engine optimizations</h3>
   <input
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={seoSlug}
     on:keyup={debounceChange}
     on:input={() => {
-      seoSlug = slugify(seoSlug.replace(" ", "-"), { preserveTrailingDash: true })
+      seoSlug = slugify(seoSlug.replace(" ", "-"), {
+        preserveTrailingDash: true
+      })
     }}
     on:change={() => {
       seoSlug = slugify(seoSlug)
@@ -223,13 +238,13 @@
     placeholder="Slug, приклад: product-name"
   />
   <input
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={seoTitle}
     on:keyup={debounceChange}
     placeholder="Назва"
   />
   <textarea
-    class="flex-1 bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
+    class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"
     bind:value={seoDescription}
     on:keyup={debounceChange}
     placeholder="Опис"

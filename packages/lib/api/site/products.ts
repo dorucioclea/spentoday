@@ -112,3 +112,26 @@ export async function deleteProductImage(fetch: Fetch, base: string, imageId: st
   })
   return response && response.ok
 }
+
+//
+// CHANGE PRODUCT CATEGORY
+
+export async function changeProductCategory(
+  fetch: Fetch,
+  base: string,
+  input: {
+    categoryId: string
+    productId: string
+  }
+) {
+  const response = await secureFetch(fetch, base, {
+    route: "/v1/site/products/categories",
+    method: "PATCH",
+    body: {
+      productId: input.productId,
+      categoryId: input.categoryId
+    }
+  })
+  if (!response) return false
+  return response.ok
+}
