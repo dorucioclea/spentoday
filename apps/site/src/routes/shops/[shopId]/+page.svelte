@@ -3,7 +3,8 @@
   import { Api } from "lib"
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
-  import { routes } from "$lib"
+  import { api, routes } from "$lib"
+  import { call } from "$lib/fetch"
 
   export let data: PageData
 
@@ -16,7 +17,7 @@
       return
     }
 
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+    const response = await call(fetch, "client", {
       route: "/v1/site/products",
       method: "POST",
       body: {

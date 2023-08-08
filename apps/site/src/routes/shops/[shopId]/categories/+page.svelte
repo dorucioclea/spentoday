@@ -4,6 +4,8 @@
   import { PUBLIC_API_URL } from "$env/static/public"
   import type { ShopCategory } from "./+page"
   import { goto } from "$app/navigation"
+  import { api } from "$lib"
+  import { call, callJson } from "$lib/fetch"
 
   export let data: PageData
   $: categories = data.categories
@@ -25,7 +27,7 @@
       return
     }
 
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+    const response = await call(fetch, "client", {
       route: "/v1/site/categories",
       method: "POST",
       body: {
@@ -38,7 +40,7 @@
       return
     }
 
-    const json = await Api.responseJson<ShopCategory>(response)
+    const json = await callJson<ShopCategory>(response)
     if (!json) {
       message = "Щось не так"
       return
@@ -66,7 +68,7 @@
     if (name != category.name) body.name = name
     if (parentInput != category.parentId) body.parentId = parentInput
 
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+    const response = await call(fetch, "client", {
       route: "/v1/site/categories",
       method: "PATCH",
       body: body
@@ -75,7 +77,7 @@
     if (!response) {
       message = "Не можемо змінити."
     } else if (response.ok) {
-      const json = await Api.responseJson<ShopCategory>(response)
+      const json = await callJson<ShopCategory>(response)
       if (!json) {
         message = "Щось не так"
         return
@@ -83,10 +85,10 @@
       category.name = json.name
       category.parentId = json.parentId
       categories = categories
-    } else if (response.status == Api.NOT_FOUND) {
+    } else if (response.status == 404) {
       message = "Категорія не знайдена в базі данних."
-    } else if (response.status == Api.FORBIDDEN) {
-      goto("/login")
+    } else if (response.status == 403) {
+      message = "Ви не маєте досволу на це."
     } else {
       message = "Не можемо змінити."
     }
@@ -102,7 +104,7 @@
   }
 
   async function remove(id: string) {
-    const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+    const response = await call(fetch, "client", {
       route: `/v1/site/categories/${id}`,
       method: "DELETE"
     })
@@ -110,10 +112,10 @@
       message = "Не можемо видалити."
     } else if (response.ok) {
       categories = categories.filter((x) => x.id != id)
-    } else if (response.status == Api.NOT_FOUND) {
+    } else if (response.status == 404) {
       message = "Категорія не знайдена в базі данних."
-    } else if (response.status == Api.FORBIDDEN) {
-      goto("/login")
+    } else if (response.status == 403) {
+      message = "Ви не маєте досволу на це."
     } else {
       message = "Не можемо видалити."
     }

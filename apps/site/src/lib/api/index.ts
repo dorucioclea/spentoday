@@ -1,6 +1,5 @@
-export * from "./base"
-export * from "./auth"
-export * from "./dashboard"
+export * from "./domains"
+export * from "./products"
 
 export type Image = {
   provider: string // "storj" | "github"
@@ -21,21 +20,3 @@ export function imageUrl(image: Image): string | null {
 
   return null
 }
-
-// async function upload() {
-// console.log(files)
-// const file = files[0]
-// if (!file) {
-//   console.log("no file")
-//   return
-// }
-// const formData = new FormData()
-// formData.append("file", file)
-// const response = await Api.callSecure(fetch, "/api/test/upload", "POST", formData)
-// if (!response) {
-//   console.log("fail")
-//   return
-// }
-// console.log(response)
-// url = await response.text()
-// }

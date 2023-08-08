@@ -1,14 +1,7 @@
 // place files you want to import through the `$lib` alias in this folder.
 
 export * as routes from "./routes"
-export * as Load from "./load"
-
-export function debounce(timer: number, action: Function) {
-  return () => {
-    clearTimeout(timer)
-    timer = setTimeout(action, 500)
-  }
-}
+export * as api from "./api"
 
 export function isValidSlug(slug: string): boolean {
   if (slug.length > 100) return false

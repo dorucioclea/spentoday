@@ -2,8 +2,7 @@
   import slugify from "@sindresorhus/slugify"
   import type { PageData } from "./$types"
   import { PUBLIC_API_URL } from "$env/static/public"
-  import { Api } from "lib"
-  import { imageSize } from "$lib"
+  import { api, imageSize } from "$lib"
 
   export let data: PageData
   $: images = data.product.images
@@ -28,7 +27,7 @@
   }
 
   async function change() {
-    const input: Api.UpdateProductInput = { id: data.productId }
+    const input: api.UpdateProductInput = { id: data.productId }
 
     if (data.product.seoSlug != seoSlug) input.seoSlug = seoSlug.slice()
     if (data.product.seoTitle != seoTitle) input.seoTitle = seoTitle.slice()
@@ -46,7 +45,7 @@
     }
 
     status = "Зберігається..."
-    const updated = await Api.updateProduct(fetch, PUBLIC_API_URL, input)
+    const updated = await api.updateProduct(fetch, "client", input)
     if (!updated) {
       status = "Не зберіглося"
       return
@@ -71,7 +70,7 @@
     const { width, height } = await imageSize(file)
     if (width != height) return alert("Only 1:1 images are supported")
 
-    const result = await Api.uploadProductImage(fetch, PUBLIC_API_URL, {
+    const result = await api.uploadProductImage(fetch, "client", {
       productId: data.productId,
       file: file
     })
@@ -85,13 +84,13 @@
   }
 
   async function deleteImage(imageId: string) {
-    const deleted = await Api.deleteProductImage(fetch, PUBLIC_API_URL, imageId)
+    const deleted = await api.deleteProductImage(fetch, "client", imageId)
     if (!deleted) return alert("Не можемо видалити зображення!")
     images = images.filter((x) => x.id != imageId)
   }
 
   async function publish() {
-    const result = await Api.publishProduct(fetch, PUBLIC_API_URL, data.productId)
+    const result = await api.publishProduct(fetch, "client", data.productId)
     if (result == "ok") {
       data.product.isDraft = false
       isDraft = false
@@ -106,7 +105,7 @@
   async function changeCategory() {
     if (categoryIdToChange == null) return
 
-    const changed = await Api.changeProductCategory(fetch, PUBLIC_API_URL, {
+    const changed = await api.changeProductCategory(fetch, "client", {
       productId: data.productId,
       categoryId: categoryIdToChange
     })
@@ -147,7 +146,7 @@
   <div class="grid grid-cols-4 gap-2 my-4">
     {#each images as image (image.id)}
       <div>
-        <img class="p-2 rounded-t bg-gray-50" src={Api.imageUrl(image)} alt="Product" />
+        <img class="p-2 rounded-t bg-gray-50" src={api.imageUrl(image)} alt="Product" />
         <button
           on:click={() => deleteImage(image.id)}
           class="w-full rounded-b p-2 bg-red-100 hover:bg-red-200 text-red-800"

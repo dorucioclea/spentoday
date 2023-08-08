@@ -1,5 +1,4 @@
-import { BAD_REQUEST, CONFLICT, NOT_FOUND, responseJson, secureFetch } from "../base"
-import type { Fetch } from "../base"
+import { call, callJson, type Fetch, type FetchSide } from "$lib/fetch"
 
 //
 // GET ONE PRODUCT TO EDIT
@@ -35,15 +34,43 @@ type CategoryOutput = {
   assigned: boolean
 }
 
-export async function oneProduct(fetch: Fetch, base: string, productId: string) {
-  const response = await secureFetch(fetch, base, {
+export async function oneProduct(fetch: Fetch, side: FetchSide, productId: string) {
+  const response = await call(fetch, side, {
     route: `/v1/site/products/${productId}`,
     method: "GET"
   })
   if (!response) return null
 
-  const json = await responseJson<OneProductOutput>(response)
+  const json = await callJson<OneProductOutput>(response)
   return json
+}
+
+//
+// UPDATE PRODUCT
+
+export type UpdateProductInput = {
+  id: string
+  name?: string
+  price?: number
+  amount?: number
+  description?: string
+  isDraft?: boolean
+  seoTitle?: string
+  seoDescription?: string
+  seoSlug?: string
+}
+
+export async function updateProduct(
+  fetch: Fetch,
+  side: FetchSide,
+  input: UpdateProductInput
+) {
+  const response = await call(fetch, side, {
+    route: `/v1/site/products`,
+    method: "PATCH",
+    body: input
+  })
+  return response != null && response.ok
 }
 
 //
@@ -51,10 +78,10 @@ export async function oneProduct(fetch: Fetch, base: string, productId: string) 
 
 export async function publishProduct(
   fetch: Fetch,
-  base: string,
+  side: FetchSide,
   productId: string
 ): Promise<"ok" | "fail" | "not-found"> {
-  const response = await secureFetch(fetch, base, {
+  const response = await call(fetch, side, {
     route: `/v1/site/products/${productId}/publish`,
     method: "POST"
   })
@@ -68,7 +95,7 @@ export async function publishProduct(
 // UPLOAD PRODUCT IMAGE
 export async function uploadProductImage(
   fetch: Fetch,
-  base: string,
+  side: FetchSide,
   input: {
     productId: string
     file: File
@@ -85,32 +112,32 @@ export async function uploadProductImage(
   const formData = new FormData()
   formData.append("file", input.file)
 
-  const response = await secureFetch(fetch, base, {
+  const response = await call(fetch, side, {
     route: `/v1/site/products/${input.productId}/image`,
     method: "POST",
     body: formData
   })
   if (!response) return { status: "problem" }
   if (response.ok) {
-    const json = await responseJson<ImageOutput>(response)
+    const json = await callJson<ImageOutput>(response)
     if (!json) return { status: "problem" }
     return { data: json }
   }
-  if (response.status == CONFLICT) return { status: "count-limit-reached" }
-  if (response.status == BAD_REQUEST) return { status: "not-image" }
-  if (response.status == NOT_FOUND) return { status: "not-found" }
+  if (response.status == 409) return { status: "count-limit-reached" }
+  if (response.status == 400) return { status: "not-image" }
+  if (response.status == 404) return { status: "not-found" }
   return { status: "problem" }
 }
 
 //
 // DELETE PRODUCT IMAGE
 
-export async function deleteProductImage(fetch: Fetch, base: string, imageId: string) {
-  const response = await secureFetch(fetch, base, {
+export async function deleteProductImage(fetch: Fetch, side: FetchSide, imageId: string) {
+  const response = await call(fetch, side, {
     route: `/v1/site/products/image/${imageId}`,
     method: "DELETE"
   })
-  return response && response.ok
+  return response != null && response.ok
 }
 
 //
@@ -118,13 +145,13 @@ export async function deleteProductImage(fetch: Fetch, base: string, imageId: st
 
 export async function changeProductCategory(
   fetch: Fetch,
-  base: string,
+  side: FetchSide,
   input: {
     categoryId: string
     productId: string
   }
 ) {
-  const response = await secureFetch(fetch, base, {
+  const response = await call(fetch, side, {
     route: "/v1/site/products/categories",
     method: "PATCH",
     body: {

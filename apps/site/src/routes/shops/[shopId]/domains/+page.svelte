@@ -1,9 +1,7 @@
 <script lang="ts">
   import type { PageData } from "./$types"
-  import { Api } from "lib"
-  import { PUBLIC_API_URL } from "$env/static/public"
   import { goto } from "$app/navigation"
-  import { routes } from "$lib"
+  import { api, routes } from "$lib"
 
   export let data: PageData
   $: domains = data.domains
@@ -16,7 +14,7 @@
       return alert("You can only have 1 free .spentoday.com domain")
     }
 
-    const res = await Api.addDomain(fetch, PUBLIC_API_URL, {
+    const res = await api.addDomain(fetch, "client", {
       shopId: data.shopId,
       domain: domainInput
     })
@@ -46,7 +44,7 @@
   }
 
   async function removeDomain(domain: string) {
-    const res = await Api.removeDomain(fetch, PUBLIC_API_URL, data.shopId, domain)
+    const res = await api.removeDomain(fetch, "client", data.shopId, domain)
     if (res == "ok") {
       domains = domains.filter((x) => x.domain != domain)
       return
@@ -57,7 +55,7 @@
   }
 
   async function verifyDomain(domain: string) {
-    const res = await Api.verifyDomain(fetch, PUBLIC_API_URL, domain)
+    const res = await api.verifyDomain(fetch, "client", domain)
 
     if (res.status == "ok") {
       const domainElement = domains.find((x) => x.domain == domain)

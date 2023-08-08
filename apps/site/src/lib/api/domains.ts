@@ -1,5 +1,5 @@
-import type { Fetch } from "../base"
-import { secureFetch, responseJson } from "../base"
+import { call, callJson } from "$lib/fetch"
+import type { Fetch, FetchSide } from "$lib/fetch"
 
 export type ShopDomain =
   | {
@@ -19,7 +19,7 @@ export type ShopDomain =
 
 export async function verifyDomain(
   fetch: Fetch,
-  base: string,
+  side: FetchSide,
   domain: string
 ): Promise<
   | {
@@ -30,7 +30,7 @@ export async function verifyDomain(
       status: "not-verified"
     }
 > {
-  const response = await secureFetch(fetch, base, {
+  const response = await call(fetch, side, {
     route: `/v1/site/domains/${domain}/verify`,
     method: "PATCH"
   })
@@ -38,7 +38,7 @@ export async function verifyDomain(
   if (response.status == 200) return { status: "ok" }
 
   if (response.status == 202) {
-    const json = await responseJson<ShopDomain>(response)
+    const json = await callJson<ShopDomain>(response)
     if (!json) return { status: "problem" }
     return { data: json, status: "not-verified" }
   }
@@ -48,11 +48,11 @@ export async function verifyDomain(
 
 export async function removeDomain(
   fetch: Fetch,
-  base: string,
+  side: FetchSide,
   shopId: string,
   domain: string
 ): Promise<"fail" | "ok" | "not-found" | "bad-domain"> {
-  const response = await secureFetch(fetch, base, {
+  const response = await call(fetch, side, {
     route: `/v1/site/domains/${shopId}/${domain}`,
     method: "DELETE"
   })
@@ -65,7 +65,7 @@ export async function removeDomain(
 
 export async function addDomain(
   fetch: Fetch,
-  base: string,
+  side: FetchSide,
   input: {
     shopId: string
     domain: string
@@ -80,20 +80,20 @@ export async function addDomain(
       status: "ok"
     }
 > {
-  const response = await secureFetch(fetch, base, {
+  const response = await call(fetch, side, {
     route: `/v1/site/domains/${input.shopId}`,
     method: "POST",
     body: { domain: input.domain }
   })
   if (!response) return { status: "fail" }
   if (response.ok) {
-    var json = await responseJson<ShopDomain>(response)
+    var json = await callJson<ShopDomain>(response)
     if (!json) return { status: "fail" }
     return { data: json, status: "ok" }
   }
 
   if (response.status == 409) {
-    var reason = await responseJson<"has-free-domain" | "domain-taken">(response)
+    var reason = await callJson<"has-free-domain" | "domain-taken">(response)
     return { status: reason ?? "fail" }
   }
   if (response.status == 400) return { status: "bad-domain" }

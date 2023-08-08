@@ -1,7 +1,7 @@
-import { PUBLIC_API_URL } from "$env/static/public"
-import { error } from "@sveltejs/kit"
+import { error, redirect } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
-import { Api } from "lib"
+import { call, callJson } from "$lib/fetch"
+import type { ShopDomain } from "$lib/api"
 
 /*
 
@@ -13,13 +13,15 @@ import { Api } from "lib"
 export const load = (async ({ fetch, params }) => {
   const shopId = params.shopId
 
-  const response = await Api.secureFetch(fetch, PUBLIC_API_URL, {
+  const response = await call(fetch, "load", {
     route: `/v1/site/domains/${shopId}`,
     method: "GET"
   })
   if (response == null) throw error(500, "Не можемо підгрузити ващі домени.")
 
-  const data = await Api.responseJson<Api.ShopDomain[]>(response)
+  if (response.status == 401) throw redirect(302, "/login")
+
+  const data = await callJson<ShopDomain[]>(response)
   if (data == null) throw error(500, "Не можемо підгрузити ващі домени.")
 
   return {
