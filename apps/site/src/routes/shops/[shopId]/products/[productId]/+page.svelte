@@ -101,10 +101,8 @@
     alert("Не можемо опублікувати продукт")
   }
 
-  let categoryIdToChange: string | null
+  let categoryIdToChange: string | null = data.categoryId ?? null
   async function changeCategory() {
-    if (categoryIdToChange == null) return
-
     const changed = await api.changeProductCategory(fetch, "client", {
       productId: data.productId,
       categoryId: categoryIdToChange
@@ -139,7 +137,9 @@
   >
     <option value={null}>No category</option>
     {#each categories as category}
-      <option value={category.id} selected={category.assigned}>{category.name}</option>
+      <option value={category.id}>
+        {category.name}
+      </option>
     {/each}
   </select>
 
@@ -190,8 +190,6 @@
       </label>
     {/if}
   </div>
-
-  <!-- <button on:click={uploadImage}>Upload file</button> -->
 
   <input
     class=" bg-gray-100 focus:bg-gray-50 px-6 py-3 rounded-md border border-gray-200"

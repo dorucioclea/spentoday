@@ -6,6 +6,7 @@ import { call, callJson, type Fetch, type FetchSide } from "$lib/fetch"
 export type OneProductOutput = {
   product: ProductOutput
   categories: CategoryOutput[]
+  categoryId?: string
 }
 
 export type ImageOutput = {
@@ -31,7 +32,6 @@ type ProductOutput = {
 type CategoryOutput = {
   id: string
   name: string
-  assigned: boolean
 }
 
 export async function oneProduct(fetch: Fetch, side: FetchSide, productId: string) {
@@ -147,7 +147,7 @@ export async function changeProductCategory(
   fetch: Fetch,
   side: FetchSide,
   input: {
-    categoryId: string
+    categoryId: string | null
     productId: string
   }
 ) {

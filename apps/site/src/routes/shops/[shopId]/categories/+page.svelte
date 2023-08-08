@@ -32,7 +32,8 @@
       method: "POST",
       body: {
         name: name,
-        shopId: data.shopId
+        shopId: data.shopId,
+        parentId: parentInput
       }
     })
     if (!response || !response.ok) {

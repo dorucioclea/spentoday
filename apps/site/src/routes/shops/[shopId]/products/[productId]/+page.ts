@@ -16,6 +16,7 @@ export const load = (async ({ fetch, params }) => {
   return {
     product: output.product,
     categories: output.categories,
+    categoryId: output.categoryId,
     productId: params.productId
   }
 }) satisfies PageLoad
